@@ -121,7 +121,7 @@
     flex-wrap: wrap; /* Padrão para desktop */
 }
 
-/* Ajustes específicos para Celular */
+/* Ajustes específicos para Celular (Escala 1-10) */
 @media (max-width: 600px) {
     .scale-options {
         flex-wrap: nowrap; /* Impede quebra de linha */
@@ -140,6 +140,38 @@
     /* Reduz um pouco a fonte no mobile para caber melhor */
     .scale-options span {
         font-size: 12px;
+    }
+
+    /* Correção para alinhar escala de 5 pontos verticalmente em telas pequenas */
+    #ai-scale {
+        flex-direction: column; /* Alinha os itens em coluna */
+        gap: 10px !important;    /* Reduz o espaço entre eles */
+        align-items: center;     /* Centraliza a coluna */
+        width: 100%;             /* Usa a largura total do container */
+    }
+    #ai-scale label {
+        width: 80%; /* Dando mais largura para o texto respirar */
+        text-align: center;
+        padding: 8px 0;
+        border: 1px solid #ddd; /* Adiciona uma borda leve para separar as opções */
+        border-radius: 5px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        /* Garante que o radio button e o texto fiquem juntos */
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+    #ai-scale label input[type="radio"] {
+        margin-right: 5px; /* Espaço entre o radio e o texto */
+    }
+    #ai-scale span {
+        font-size: 14px; /* Garante que o texto seja legível */
+        /* Remove a quebra de linha forçada, deixa o texto fluir */
+        display: inline; 
+    }
+    #ai-scale span br {
+        display: none; /* Remove a tag <br> forçada */
     }
 }
 </style>
@@ -667,12 +699,12 @@
 		return hash;
 	}
 
+    // Corrigido: Agora sorteia um modo de IA COMPLETAMENTE aleatório para a questão atual.
 	function assignIAModeForParticipant() {
-		const modes = [1, 2, 3, 4];
-		const base = prolificPID || generateRandomHashKey();
-		const h = Math.abs(hashStringToInt(base));
-		IA_MODE = modes[h % modes.length];
-		console.log("Assigned IA_MODE:", IA_MODE);
+		const modes = [1, 2, 3, 4]; // 1: Sem IA, 2: Crua, 3: Neutra, 4: Opinativa
+		const h = Math.random(); 
+		IA_MODE = modes[Math.floor(h * modes.length)];
+		console.log("Assigned IA_MODE for question:", IA_MODE);
 	}
 
 	// Estado global
@@ -840,6 +872,9 @@
 	// Seleciona pergunta + configuração do chatbot para a rodada corrente
 	function selectQuestionAndChatbox() {
 		console.log("Categoria atual:", currentCategoryIndex);
+
+        // ATRIBUIÇÃO DE MODO DE IA: Sorteio para CADA nova pergunta de proposta
+        assignIAModeForParticipant(); 
 
 		const category = categories[currentCategoryIndex];
 		currentQuestionIndex = Math.floor(Math.random() * category.questions.length);
@@ -1044,7 +1079,7 @@
 	}
 	console.log('Retrieved Prolific PID:', prolificPID);
 
-	assignIAModeForParticipant();
+	// Removida a chamada inicial aqui. assignIAModeForParticipant será chamada dentro de selectQuestionAndChatbox
 
 	// limpa timer e callback pendente
 	function clearTimer() {
@@ -1442,7 +1477,7 @@
 		const question8 = document.querySelector('input[name="question8"]:checked')?.value || null;
 		const question9 = document.querySelector('input[name="question9"]:checked')?.value || null;
         
-        // NOVO: Coleta o email da seção final e armazena em uma variável
+        // NOVO: Coleta o email da seção final
         const participantEmail = document.getElementById('participant-email')?.value.trim() || null;
 
 		const demografia = {
@@ -1492,8 +1527,6 @@
 	function submitFinalSurvey() {
         if (!checkAnswers()) return; // Última checagem (Q16)
         
-        // O email agora é incluído no payload dentro de buildSurveyPayload()
-        
         submitSurveyAnswers_v2();
         
         showCompletionMessage();
@@ -1508,7 +1541,7 @@
     
     // Substitua pelos seus dados reais do painel do Supabase
     const SUPABASE_URL_CLIENT = 'https://fibpbxrmoaznrddfwasz.supabase.co'; 
-    const SUPABASE_ANON_KEY = 'sb_publishable_hJbvVrwkjIC6U_5hVt_6GA_MVDcesEt'; // Use a chave 'anon' (pública), NÃO a 'service_role'
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZpYnBieHJtb2F6bnJkZGZ3YXN6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI1ODI2NzIsImV4cCI6MjA3ODE1ODY3Mn0.ar6BETVHbIbdGmZ9Ckd7X5k07wAC5VjmYumRCrB50vQ'; // Use a chave 'anon' (pública), NÃO a 'service_role'
 
     // Inicializa o cliente Supabase
     const supabaseClient = supabase.createClient(SUPABASE_URL_CLIENT, SUPABASE_ANON_KEY);
