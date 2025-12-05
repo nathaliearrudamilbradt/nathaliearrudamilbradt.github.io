@@ -620,6 +620,12 @@
 	</div>
 </div>
 
+<div id="disqualification-section" style="display: none; text-align: center; margin-top: 100px;">
+    <p style="font-size: 18px; color: #555; line-height: 1.5; margin-bottom: 20px; max-width: 600px; margin: 0 auto;">
+        Obrigada! Neste momento, você não atende aos critérios de participação.
+    </p>
+</div>
+
 <script>
 	// MODELO DE IA (sempre GPT aqui, mas mantido para extensões futuras)
 	const questionAIModel = {
@@ -751,7 +757,9 @@
 
 		// Entrada na página de informação logo após Q1
 		if (!showingInfoQ2 && step > 0 && currentPage === 1) {
-			if (!checkAnswers()) return;
+			// Checagem de elegibilidade ocorre em checkAnswers() antes de avançar
+			if (!checkAnswers()) return; 
+			
 			if (q1Div) q1Div.style.display = "none";
 			if (infoDiv) infoDiv.style.display = "block";
 			showingInfoQ2 = true;
@@ -802,14 +810,19 @@
 		currentPage += step;
 		if (currentPage < 1) currentPage = 1;
 
-		// Pular pergunta sobre candidato (Q3) se a pessoa não votou ou não podia votar (Q2)
+		// LÓGICA CORRIGIDA: Pular pergunta sobre candidato (Q3) se a pessoa:
+        // 1. Votou somente no 1º turno ('votou_1')
+        // 2. Não votou em nenhum turno ('nao_votou')
+        // 3. Não podia votar ('nao_podia_votar')
 		const q2Val = document.querySelector('input[name="question2"]:checked')?.value;
-		if (q2Val === 'nao_votou' || q2Val === 'nao_podia_votar') {
-			// indo pra frente, não mostrar Q3
+        const shouldSkipQ3 = (q2Val === 'votou_1' || q2Val === 'nao_votou' || q2Val === 'nao_podia_votar');
+
+		if (shouldSkipQ3) {
+			// Indo pra frente (de Q2 para Q3), pula para Q4
 			if (currentPage === 3 && step > 0) {
 				currentPage = 4;
 			}
-			// voltando, não mostrar Q3
+			// Voltando (de Q4 para Q3), pula para Q2
 			if (currentPage === 3 && step < 0) {
 				currentPage = 2;
 			}
@@ -1371,8 +1384,14 @@
 				alert("Por favor, selecione uma opção para esta pergunta.");
 				return false;
 			}
+			// LÓGICA CORRIGIDA: Exibe a tela de desqualificação
 			if (q1 === "br_under18" || q1 === "not_brazilian") {
-				alert("Obrigada! Neste momento, você não atende aos critérios de participação.");
+				// Esconde todo o container principal
+                document.getElementById('consent-section').style.display = "none";
+                document.getElementsByClassName('survey-container')[0].style.display = "none";
+                document.getElementById('navigation-buttons').style.display = "none";
+                // Mostra a tela de desqualificação
+                document.getElementById('disqualification-section').style.display = "block";
 				return false;
 			}
 		}
@@ -1381,9 +1400,15 @@
 			alert("Por favor, responda à pergunta acima.");
 			return false;
 		}
+		// A checagem de Q3 é feita se for a página atual e se for um dos votos que NÃO pulam a página
 		if (currentPage === 3 && !q3) {
-			alert("Por favor, responda à pergunta acima.");
-			return false;
+			// Verifica se a Q2 foi respondida com voto no 1º e 2º turno, ou voto só no 2º turno
+			const q2Val = document.querySelector('input[name="question2"]:checked')?.value;
+			if (q2Val === 'votou_1e2' || q2Val === 'votou_2') {
+				alert("Por favor, responda à pergunta acima.");
+				return false;
+			}
+			// Se Q2 foi 'votou_1', 'nao_votou' ou 'nao_podia_votar', o navigatePage já pula, então não chega aqui.
 		}
 		if (currentPage === 4 && !q4) {
 			alert("Por favor, responda à pergunta acima.");
@@ -1543,7 +1568,7 @@
     
     // Substitua pelos seus dados reais do painel do Supabase
     const SUPABASE_URL_CLIENT = 'https://fibpbxrmoaznrddfwasz.supabase.co'; 
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZpYnBieHJtb2F6bnJkZGZ3YXN6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI1ODI2NzIsImV4cCI6MjA3ODE1ODY3Mn0.ar6BETVHbIbdGmZ9Ckd7X5k07wAC5VjmYumRCrB50vQ'; // Use a chave 'anon' (pública), NÃO a 'service_role'
+    const SUPABASE_ANON_KEY = 'sb_publishable_hJbvVrwkjIC6U_5hVt_6GA_MVDcesEt'; // Use a chave 'anon' (pública), NÃO a 'service_role'
 
     // Inicializa o cliente Supabase
     const supabaseClient = supabase.createClient(SUPABASE_URL_CLIENT, SUPABASE_ANON_KEY);
