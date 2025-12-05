@@ -161,17 +161,19 @@
         flex-direction: row;
         justify-content: center;
         align-items: center;
+        word-break: break-word; /* Adicionado para quebra de palavra */
+        line-height: 1.2;
     }
     #ai-scale label input[type="radio"] {
         margin-right: 5px; /* Espaço entre o radio e o texto */
     }
     #ai-scale span {
         font-size: 14px; /* Garante que o texto seja legível */
-        /* Remove a quebra de linha forçada, deixa o texto fluir */
-        display: inline; 
+        white-space: normal; /* Permite que o texto quebre naturalmente */
+        display: block; 
     }
     #ai-scale span br {
-        display: none; /* Remove a tag <br> forçada */
+        display: none; /* Não precisa remover, mas mantido para segurança */
     }
 }
 </style>
@@ -237,14 +239,14 @@
 <div id="question-box" style="display: none; text-align: center; margin-top: 20px; margin-bottom: 30px;">
 	<p id="final-question"></p>
 
-	<div id="ai-scale" style="display: flex; justify-content: center; gap: 24px; margin-bottom: 16px; flex-wrap: wrap;">
+    <div id="ai-scale" style="display: flex; justify-content: center; gap: 24px; margin-bottom: 16px; flex-wrap: wrap;">
 		<label style="display:flex; flex-direction:column; align-items:center; font-size: 14px;">
 			<input type="radio" name="ai_vote" value="discordo_fortemente">
-			<span>Não deveria<br>de forma alguma</span>
+			<span>Não deveria de forma alguma</span>
 		</label>
 		<label style="display:flex; flex-direction:column; align-items:center; font-size: 14px;">
 			<input type="radio" name="ai_vote" value="discordo">
-			<span>Provavelmente<br>não deveria</span>
+			<span>Provavelmente não deveria</span>
 		</label>
 		<label style="display:flex; flex-direction:column; align-items:center; font-size: 14px;">
 			<input type="radio" name="ai_vote" value="neutro">
@@ -252,11 +254,11 @@
 		</label>
 		<label style="display:flex; flex-direction:column; align-items:center; font-size: 14px;">
 			<input type="radio" name="ai_vote" value="concordo">
-			<span>Provavelmente<br>deveria</span>
+			<span>Provavelmente deveria</span>
 		</label>
 		<label style="display:flex; flex-direction:column; align-items:center; font-size: 14px;">
 			<input type="radio" name="ai_vote" value="concordo_fortemente">
-			<span>Deveria<br>totalmente</span>
+			<span>Deveria totalmente</span>
 		</label>
 	</div>
 
@@ -1541,7 +1543,7 @@
     
     // Substitua pelos seus dados reais do painel do Supabase
     const SUPABASE_URL_CLIENT = 'https://fibpbxrmoaznrddfwasz.supabase.co'; 
-    const SUPABASE_ANON_KEY = 'sb_publishable_hJbvVrwkjIC6U_5hVt_6GA_MVDcesEt'; // Use a chave 'anon' (pública), NÃO a 'service_role'
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZpYnBieHJtb2F6bnJkZGZ3YXN6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI1ODI2NzIsImV4cCI6MjA3ODE1ODY3Mn0.ar6BETVHbIbdGmZ9Ckd7X5k07wAC5VjmYumRCrB50vQ'; // Use a chave 'anon' (pública), NÃO a 'service_role'
 
     // Inicializa o cliente Supabase
     const supabaseClient = supabase.createClient(SUPABASE_URL_CLIENT, SUPABASE_ANON_KEY);
