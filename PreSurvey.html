@@ -146,7 +146,6 @@
 </head>
 <body>
 
-<!-- TERMO DE CONSENTIMENTO -->
 <div id="consent-section" style="margin-top: 50px;">
 	<p style="font-size: 18px; color: #555; line-height: 1.5; margin-bottom: 20px;">
 		<strong>Termo de consentimento </strong><br><br>
@@ -182,7 +181,6 @@
 	</button>
 </div>
 
-<!-- INSTRUÇÕES DO EXPERIMENTO DE IA -->
 <div id="instructions" style="margin-top: 50px; display: none;">
 	<p style="font-size: 18px; color: #555; line-height: 1.5; margin-bottom: 20px;">
 		Em seguida, vamos apresentar algumas <strong>propostas políticas</strong>. Em cada uma delas, queremos saber o quanto você é a favor ou contra.
@@ -198,14 +196,12 @@
 	</button>
 </div>
 
-<!-- DESCRIÇÃO / TEXTO DA PROPOSTA DURANTE EXPERIMENTO DE IA -->
 <div id="description" style="text-align: center; margin-bottom: 20px; display: none;">
 	<p style="font-size: 18px; color: #555; line-height: 1.5;">
 		<b>Primeiro, por favor responda às perguntas iniciais sobre você.</b>
 	</p>
 </div>
 
-<!-- BLOCO DE RESPOSTA À PROPOSTA (ESCALA) -->
 <div id="question-box" style="display: none; text-align: center; margin-top: 20px; margin-bottom: 30px;">
 	<p id="final-question"></p>
 
@@ -239,7 +235,6 @@
 	<p id="vote-message" style="margin-top: 20px; font-size: 16px; color: green; display: none;"></p>
 </div>
 
-<!-- TIMER + CHAT -->
 <div id="timer" style="display: none;">
 	Please spend the remaining time <strong>chatting with our AI Assistant</strong> about this issue before deciding on your answer:
 	<span style="color: red;">3:00</span>
@@ -247,11 +242,9 @@
 <div id="chatbox" style="display: none;"></div>
 <input id="user-input" placeholder="Type your message here..." style="display: none;" type="text"/>
 
-<!-- PARTE 1 (Q1–Q9) + DEMOGRAFIA (Q10–Q16) -->
 <div class="survey-container">
 	<div id="survey-questions" style="display: none; text-align: left; margin-top: 20px;">
 
-		<!-- Q1 – Screener Brasil + idade -->
 		<div class="survey-page" id="question-1" style="display: block;">
 			
 			<p>Qual das opções descreve melhor você?</p>
@@ -265,7 +258,6 @@
 			</div>
 		</div>
 
-		<!-- Q1b – texto introdutório pós-screener -->
 		<div class="survey-page" id="question-1b" style="display:none;">
 			<h2>Informações Importantes</h2>
 			<p>
@@ -275,7 +267,6 @@
 			</p>
 		</div>
 
-		<!-- Q2 – Participação eleição 2022 -->
 		<div class="survey-page" id="question-2" style="display: none;">
 			
 			<p>Na eleição de 2022 para presidente, você:</p>
@@ -293,7 +284,6 @@
 			</div>
 		</div>
 
-		<!-- Q3 – Voto 2º turno -->
 		<div class="survey-page" id="question-3" style="display: none;">
 			
 			<p>Em quem você votou para presidente no segundo turno da eleição de 2022?</p>
@@ -311,8 +301,7 @@
 			</div>
 		</div>
 
-		<!-- Q4 – Escala esquerda–direita -->
-<div class="survey-page" id="question-4" style="display: none;">
+		<div class="survey-page" id="question-4" style="display: none;">
     <p>
         Em uma escala de 1 a 10, na qual 1 significa “esquerda” e 10 significa “direita”,
         onde você diria que suas opiniões políticas se encaixam melhor?
@@ -337,7 +326,6 @@
     </div>
 </div>
 
-		<!-- Q5 – Uso de fontes de informação (tabela) -->
 		<div class="survey-page" id="question-5" style="display: none;">
 			
 			<p>
@@ -432,7 +420,6 @@
 			</table>
 		</div>
 
-		<!-- Q6 – STF constitucionalidade -->
 		<div class="survey-page" id="question-6" style="display: none;">
 			
 			<p>Quem é responsável por julgar se uma lei é constitucional no Brasil?</p>
@@ -445,7 +432,6 @@
 			</div>
 		</div>
 
-		<!-- Q7 – Frequência eleições -->
 		<div class="survey-page" id="question-7" style="display: none;">
 			
 			<p>Com que frequência ocorrem eleições gerais (para presidente, governadores, deputados e senadores)?</p>
@@ -458,10 +444,9 @@
 			</div>
 		</div>
 
-		<!-- Q8 – Trabalho do Congresso -->
-<div class="survey-page" id="question-8" style="display: none;">
+		<div class="survey-page" id="question-8" style="display: none;">
     
-    <p style="color: #d9534f; font-weight: bold;">
+    <p>
         Para demonstrar que você está lendo as perguntas com atenção, por favor selecione a opção "Julgar crimes" abaixo.
     </p>
     <div style="text-align: left; display: inline-block;">
@@ -473,7 +458,6 @@
     </div>
 </div>
 
-		<!-- Q9 – Cargo de Hugo Motta -->
 		<div class="survey-page" id="question-9" style="display: none;">
 			
 			<p>Você sabe qual cargo Hugo Motta ocupa atualmente?</p>
@@ -485,7 +469,6 @@
 			</div>
 		</div>
 
-		<!-- Q10–Q16 – DEMOGRAFIA -->
 		<div class="survey-page" id="question-10" style="display: none;">
 			
 			<p>Em qual região do Brasil você mora atualmente?</p>
@@ -592,7 +575,6 @@
     </button>
 </div>
 
-		<!-- BOTÕES NAVEGAÇÃO PARTE 1 + DEMOGRAFIA -->
 		<div id="navigation-buttons" style="margin-top: 20px;">
 			<button id="back-button" onclick="navigatePage(-1)" style="padding: 10px 20px; font-size: 16px; display: none;">
 				Voltar
@@ -1021,8 +1003,6 @@
 	}
 
 	function showCompletionMessage() {
-		submitSurveyAnswers_v2();
-
 		const surveyQuestions = document.getElementById('survey-questions');
 		if (surveyQuestions) surveyQuestions.style.display = "none";
 
@@ -1336,17 +1316,9 @@
 
 		const q6 = document.querySelector('input[name="question6"]:checked')?.value;
 		const q7 = document.querySelector('input[name="question7"]:checked')?.value;
-		if (currentPage === 8) {
-        if (!q8) {
-            alert("Por favor, responda à pergunta acima.");
-            return false;
-        }
-        // ATTENTION CHECK: Força o usuário a marcar a opção correta
-        if (q8 !== "julgar_crimes") {
-            alert("Por favor, leia a instrução da pergunta 8 atentamente e selecione a opção solicitada.");
-            return false;
-        }
-    }
+		
+		const q8Value = document.querySelector('input[name="question8"]:checked')?.value; // Variável corrigida
+		
 		const q9 = document.querySelector('input[name="question9"]:checked')?.value;
 
 		const d_regiao = document.querySelector('input[name="demo_regiao"]:checked')?.value;
@@ -1397,10 +1369,19 @@
 			alert("Por favor, responda à pergunta acima.");
 			return false;
 		}
-		if (currentPage === 8 && !q8) {
-			alert("Por favor, responda à pergunta acima.");
-			return false;
+		
+		if (currentPage === 8) {
+			if (!q8Value) { // Corrigido
+				alert("Por favor, responda à pergunta acima.");
+				return false;
+			}
+			// ATTENTION CHECK: Força o usuário a marcar a opção correta
+			if (q8Value !== "julgar_crimes") { // Corrigido
+				alert("Por favor, leia a instrução da pergunta 8 atentamente e selecione a opção solicitada.");
+				return false;
+			}
 		}
+		
 		if (currentPage === 9 && !q9) {
 			alert("Por favor, responda à pergunta acima.");
 			return false;
@@ -1460,6 +1441,9 @@
 		const question7 = document.querySelector('input[name="question7"]:checked')?.value || null;
 		const question8 = document.querySelector('input[name="question8"]:checked')?.value || null;
 		const question9 = document.querySelector('input[name="question9"]:checked')?.value || null;
+        
+        // NOVO: Coleta o email da seção final e armazena em uma variável
+        const participantEmail = document.getElementById('participant-email')?.value.trim() || null;
 
 		const demografia = {
 			regiao: document.querySelector('input[name="demo_regiao"]:checked')?.value || null,
@@ -1468,7 +1452,9 @@
 			faixa_etaria: document.querySelector('input[name="demo_faixa_etaria"]:checked')?.value || null,
 			renda: document.querySelector('input[name="demo_renda"]:checked')?.value || null,
 			religiao: document.querySelector('input[name="demo_religiao"]:checked')?.value || null,
-			escolaridade: document.querySelector('input[name="demo_escolaridade"]:checked')?.value || null
+			escolaridade: document.querySelector('input[name="demo_escolaridade"]:checked')?.value || null,
+            // Adiciona o email ao objeto demografia para ser enviado no payload
+            contato_entrevista: participantEmail
 		};
 
 		return {
@@ -1503,9 +1489,15 @@
 			});
 	}
 
-	function submitSurveyAnswers() {
-		submitSurveyAnswers_v2();
-	}
+	function submitFinalSurvey() {
+        if (!checkAnswers()) return; // Última checagem (Q16)
+        
+        // O email agora é incluído no payload dentro de buildSurveyPayload()
+        
+        submitSurveyAnswers_v2();
+        
+        showCompletionMessage();
+    }
 
 	function startChat() {
 		resetChatbox();
@@ -1516,7 +1508,7 @@
     
     // Substitua pelos seus dados reais do painel do Supabase
     const SUPABASE_URL_CLIENT = 'https://fibpbxrmoaznrddfwasz.supabase.co'; 
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZpYnBieHJtb2F6bnJkZGZ3YXN6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI1ODI2NzIsImV4cCI6MjA3ODE1ODY3Mn0.ar6BETVHbIbdGmZ9Ckd7X5k07wAC5VjmYumRCtB50vQ'; // Use a chave 'anon' (pública), NÃO a 'service_role'
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZpYnBieHJtb2F6bnJkZGZ3YXN6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI1ODI2NzIsImV4cCI6MjA3ODE1ODY3Mn0.ar6BETVHbIbdGmZ9Ckd7X5k07wAC5VjmYumRCrB50vQ'; // Use a chave 'anon' (pública), NÃO a 'service_role'
 
     // Inicializa o cliente Supabase
     const supabaseClient = supabase.createClient(SUPABASE_URL_CLIENT, SUPABASE_ANON_KEY);
