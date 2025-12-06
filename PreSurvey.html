@@ -1455,14 +1455,20 @@ function checkAnswers() {
         return false;
     }
 
-    // --- PÁGINA 5 (TABELA) ---
-    if (currentPage === 5) {
-        if (!q5_jornal_diario || !q5_jornais_tv || !q5_jornais_radio ||
-            !q5_internet || !q5_redes_sociais || !q5_conversas || !q5_ia) {
+// --- PÁGINA 5 (TABELA) ---
+// Em vez de confiar nos "names", checamos cada linha da tabela visualmente
+if (currentPage === 5) {
+    // pega todas as linhas do corpo da tabela da Q5
+    const rows = document.querySelectorAll('#question-5 tbody tr');
+
+    for (const row of rows) {
+        const checked = row.querySelector('input[type="radio"]:checked');
+        if (!checked) {
             alert("Por favor, responda a todas as linhas da tabela acima.");
             return false;
         }
     }
+}
 
     // --- PÁGINAS 6–9 ---
     if (currentPage === 6 && !q6) {
