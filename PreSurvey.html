@@ -1037,6 +1037,10 @@
 	}
 
 function showCompletionMessage() {
+    // some a caixa branca da última tela
+    const surveyContainer = document.getElementsByClassName('survey-container')[0];
+    if (surveyContainer) surveyContainer.style.display = "none";
+
     const surveyQuestions = document.getElementById('survey-questions');
     if (surveyQuestions) surveyQuestions.style.display = "none";
 
@@ -1054,38 +1058,48 @@ function showCompletionMessage() {
         ? selectedQuestionIndices[economiaIndex]
         : null;
 
-    // Link fixo — 8 de janeiro
+    // Links em formato de BOTÃO
     let linksHtml = `
         <ul style="list-style: none; padding: 0; margin-top: 16px;">
-            <li style="margin-bottom: 8px;">
+            <li style="margin-bottom: 20px;">
                 • Consulta pública sobre liberação de presos envolvidos com o 8 de janeiro:
                 <br>
-                <a href="https://www12.senado.leg.br/ecidadania/visualizacaomateria?id=160575" target="_blank">
-                    https://www12.senado.leg.br/ecidadania/visualizacaomateria?id=160575
+                <a href="https://www12.senado.leg.br/ecidadania/visualizacaomateria?id=160575"
+                   target="_blank"
+                   style="display:inline-block; margin-top:6px; padding:8px 16px;
+                          background-color:#2e7d32; color:#fff; text-decoration:none;
+                          border-radius:4px; font-size:14px;">
+                    Acessar consulta
                 </a>
             </li>
     `;
 
-    // Taxação de grandes fortunas (índice 0 da categoria Economia)
     if (economiaQuestionIndex === 0) {
         linksHtml += `
-            <li style="margin-bottom: 8px;">
+            <li style="margin-bottom: 20px;">
                 • Consulta pública sobre taxação de grandes fortunas:
                 <br>
-                <a href="https://www12.senado.leg.br/ecidadania/visualizacaomateria?id=137929" target="_blank">
-                    https://www12.senado.leg.br/ecidadania/visualizacaomateria?id=137929
+                <a href="https://www12.senado.leg.br/ecidadania/visualizacaomateria?id=137929"
+                   target="_blank"
+                   style="display:inline-block; margin-top:6px; padding:8px 16px;
+                          background-color:#2e7d32; color:#fff; text-decoration:none;
+                          border-radius:4px; font-size:14px;">
+                    Acessar consulta
                 </a>
             </li>`;
     }
 
-    // Jornada 6x1 (índice 1 da categoria Economia)
     if (economiaQuestionIndex === 1) {
         linksHtml += `
-            <li style="margin-bottom: 8px;">
+            <li style="margin-bottom: 20px;">
                 • Consulta pública sobre a jornada de trabalho 6x1:
                 <br>
-                <a href="https://www12.senado.leg.br/ecidadania/visualizacaoideia?id=209426" target="_blank">
-                    https://www12.senado.leg.br/ecidadania/visualizacaoideia?id=209426
+                <a href="https://www12.senado.leg.br/ecidadania/visualizacaoideia?id=209426"
+                   target="_blank"
+                   style="display:inline-block; margin-top:6px; padding:8px 16px;
+                          background-color:#2e7d32; color:#fff; text-decoration:none;
+                          border-radius:4px; font-size:14px;">
+                    Acessar consulta
                 </a>
             </li>`;
     }
@@ -1099,7 +1113,7 @@ function showCompletionMessage() {
             em diálogo com ferramentas de inteligência artificial.
         </p>
         <p>
-            Caso tenha interesse em continuar engajada com temas legislativos, aqui estão algumas
+            Caso tenha interesse em continuar engajado(a) com temas legislativos, aqui estão algumas
             consultas públicas relevantes no portal e-Cidadania:
         </p>
         ${linksHtml}
@@ -1107,7 +1121,6 @@ function showCompletionMessage() {
 
     body.appendChild(finalMessage);
 }
-
 
 
 	function resetChatbox() {
