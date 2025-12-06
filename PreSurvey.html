@@ -1058,14 +1058,14 @@ function showCompletionMessage() {
         ? selectedQuestionIndices[economiaIndex]
         : null;
 
-    // Links em formato de BOTÃO
+    // Monta lista de links como antes, mas agora usando handleLinkClick
     let linksHtml = `
         <ul style="list-style: none; padding: 0; margin-top: 16px;">
             <li style="margin-bottom: 20px;">
                 • Consulta pública sobre liberação de presos envolvidos com o 8 de janeiro:
                 <br>
-                <a href="https://www12.senado.leg.br/ecidadania/visualizacaomateria?id=160575"
-                   target="_blank"
+                <a href="#"
+                   onclick="handleLinkClick('anistia', 'https://www12.senado.leg.br/ecidadania/visualizacaomateria?id=160575'); return false;"
                    style="display:inline-block; margin-top:6px; padding:8px 16px;
                           background-color:#2e7d32; color:#fff; text-decoration:none;
                           border-radius:4px; font-size:14px;">
@@ -1079,8 +1079,8 @@ function showCompletionMessage() {
             <li style="margin-bottom: 20px;">
                 • Consulta pública sobre taxação de grandes fortunas:
                 <br>
-                <a href="https://www12.senado.leg.br/ecidadania/visualizacaomateria?id=137929"
-                   target="_blank"
+                <a href="#"
+                   onclick="handleLinkClick('economia', 'https://www12.senado.leg.br/ecidadania/visualizacaomateria?id=137929'); return false;"
                    style="display:inline-block; margin-top:6px; padding:8px 16px;
                           background-color:#2e7d32; color:#fff; text-decoration:none;
                           border-radius:4px; font-size:14px;">
@@ -1094,8 +1094,8 @@ function showCompletionMessage() {
             <li style="margin-bottom: 20px;">
                 • Consulta pública sobre a jornada de trabalho 6x1:
                 <br>
-                <a href="https://www12.senado.leg.br/ecidadania/visualizacaoideia?id=209426"
-                   target="_blank"
+                <a href="#"
+                   onclick="handleLinkClick('economia', 'https://www12.senado.leg.br/ecidadania/visualizacaoideia?id=209426'); return false;"
                    style="display:inline-block; margin-top:6px; padding:8px 16px;
                           background-color:#2e7d32; color:#fff; text-decoration:none;
                           border-radius:4px; font-size:14px;">
@@ -1121,6 +1121,7 @@ function showCompletionMessage() {
 
     body.appendChild(finalMessage);
 }
+
 
 
 	function resetChatbox() {
@@ -1671,6 +1672,44 @@ if (currentPage === 5) {
     window.addEventListener('load', function() {
         checkSurveyLimitClientSide();
     });
+
+	// Registra clique em Anistia / Economia no Supabase
+async function handleLinkClick(linkType, url) {
+    try {
+        // Descobre qual pergunta de Economia a pessoa recebeu
+        const economiaIndex = categories.findIndex(c => c.name === "Economia");
+        let economiaQuestionText = null;
+
+        if (economiaIndex !== -1) {
+            const economiaQuestionIndex = selectedQuestionIndices[economiaIndex];
+            if (economiaQuestionIndex !== undefined) {
+                economiaQuestionText = categories[economiaIndex].questions[economiaQuestionIndex];
+            }
+        }
+
+        // Insere o clique na tabela link_clicks
+        const { error } = await supabaseClient
+            .from('link_clicks')
+            .insert({
+                prolific_pid: prolificPID,
+                economia_question: economiaQuestionText,
+                link_type: linkType,              // 'anistia' ou 'economia'
+                clicked_at: new Date().toISOString()
+            });
+
+        if (error) {
+            console.error('Erro ao registrar clique:', error);
+        } else {
+            console.log('Clique registrado com sucesso:', linkType);
+        }
+    } catch (e) {
+        console.error('Erro inesperado ao registrar clique:', e);
+    }
+
+    // Abre o link em nova aba
+    window.open(url, '_blank');
+}
+
     
     // --- FIM DA CONFIGURAÇÃO SUPABASE FRONTEND ---
 </script>
