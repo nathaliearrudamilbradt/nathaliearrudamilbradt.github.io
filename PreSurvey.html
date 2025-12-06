@@ -1391,131 +1391,131 @@ function showCompletionMessage() {
 		}
 	});
 
-	function checkAnswers() {
-		const q1 = document.querySelector('input[name="question1"]:checked')?.value;
-		const q2 = document.querySelector('input[name="question2"]:checked')?.value;
-		const q3 = document.querySelector('input[name="question3"]:checked')?.value;
-		const q4 = document.querySelector('input[name="question4"]:checked')?.value;
+function checkAnswers() {
+    const q1 = document.querySelector('input[name="question1"]:checked')?.value;
+    const q2 = document.querySelector('input[name="question2"]:checked')?.value;
+    const q3 = document.querySelector('input[name="question3"]:checked')?.value;
+    const q4 = document.querySelector('input[name="question4"]:checked')?.value;
 
-		const q5_jornal_diario = document.querySelector('input[name="q5_jornal_diario"]:checked')?.value;
-		const q5_jornais_tv = document.querySelector('input[name="q5_jornais_tv"]:checked')?.value;
-		const q5_jornais_radio = document.querySelector('input[name="q5_jornais_radio"]:checked')?.value;
-		const q5_internet = document.querySelector('input[name="q5_internet"]:checked')?.value;
-		const q5_redes_sociais = document.querySelector('input[name="q5_redes_sociais"]:checked')?.value;
-		const q5_conversas = document.querySelector('input[name="q5_conversas"]:checked')?.value;
-		const q5_ia = document.querySelector('input[name="q5_ia"]:checked')?.value;
+    // PERGUNTA 5 – só as fontes que ficaram na tabela
+    const q5_jornal_diario  = document.querySelector('input[name="q5_jornal_diario"]:checked')?.value;
+    const q5_jornais_tv     = document.querySelector('input[name="q5_jornais_tv"]:checked')?.value;
+    const q5_jornais_radio  = document.querySelector('input[name="q5_jornais_radio"]:checked')?.value;
+    const q5_internet       = document.querySelector('input[name="q5_internet"]:checked')?.value;
+    const q5_redes_sociais  = document.querySelector('input[name="q5_redes_sociais"]:checked')?.value;
+    const q5_conversas      = document.querySelector('input[name="q5_conversas"]:checked')?.value;
+    const q5_ia             = document.querySelector('input[name="q5_ia"]:checked')?.value;
 
-		const q6 = document.querySelector('input[name="question6"]:checked')?.value;
-		const q7 = document.querySelector('input[name="question7"]:checked')?.value;
-		
-		const q8Value = document.querySelector('input[name="question8"]:checked')?.value; // Variável corrigida
-		
-		const q9 = document.querySelector('input[name="question9"]:checked')?.value;
+    const q6 = document.querySelector('input[name="question6"]:checked')?.value;
+    const q7 = document.querySelector('input[name="question7"]:checked')?.value;
+    const q8Value = document.querySelector('input[name="question8"]:checked')?.value;
+    const q9 = document.querySelector('input[name="question9"]:checked')?.value;
 
-		const d_regiao = document.querySelector('input[name="demo_regiao"]:checked')?.value;
-		const d_cor = document.querySelector('input[name="demo_cor"]:checked')?.value;
-		const d_genero = document.querySelector('input[name="demo_genero"]:checked')?.value;
-		const d_faixa = document.querySelector('input[name="demo_faixa_etaria"]:checked')?.value;
-		const d_renda = document.querySelector('input[name="demo_renda"]:checked')?.value;
-		const d_religiao = document.querySelector('input[name="demo_religiao"]:checked')?.value;
-		const d_escolaridade = document.querySelector('input[name="demo_escolaridade"]:checked')?.value;
+    const d_regiao       = document.querySelector('input[name="demo_regiao"]:checked')?.value;
+    const d_cor          = document.querySelector('input[name="demo_cor"]:checked')?.value;
+    const d_genero       = document.querySelector('input[name="demo_genero"]:checked')?.value;
+    const d_faixa        = document.querySelector('input[name="demo_faixa_etaria"]:checked')?.value;
+    const d_renda        = document.querySelector('input[name="demo_renda"]:checked')?.value;
+    const d_religiao     = document.querySelector('input[name="demo_religiao"]:checked')?.value;
+    const d_escolaridade = document.querySelector('input[name="demo_escolaridade"]:checked')?.value;
 
-		if (currentPage === 1) {
-			if (!q1) {
-				alert("Por favor, selecione uma opção para esta pergunta.");
-				return false;
-			}
-			// LÓGICA CORRIGIDA: Exibe a tela de desqualificação
-			if (q1 === "br_under18" || q1 === "not_brazilian") {
-				// Esconde todo o container principal
-                document.getElementById('consent-section').style.display = "none";
-                document.getElementsByClassName('survey-container')[0].style.display = "none";
-                document.getElementById('navigation-buttons').style.display = "none";
-                // Mostra a tela de desqualificação
-                document.getElementById('disqualification-section').style.display = "block";
-				return false;
-			}
-		}
+    // --- PÁGINA 1 ---
+    if (currentPage === 1) {
+        if (!q1) {
+            alert("Por favor, selecione uma opção para esta pergunta.");
+            return false;
+        }
+        if (q1 === "br_under18" || q1 === "not_brazilian") {
+            document.getElementById('consent-section').style.display = "none";
+            document.getElementsByClassName('survey-container')[0].style.display = "none";
+            document.getElementById('navigation-buttons').style.display = "none";
+            document.getElementById('disqualification-section').style.display = "block";
+            return false;
+        }
+    }
 
-		if (currentPage === 2 && !q2) {
-			alert("Por favor, responda à pergunta acima.");
-			return false;
-		}
-		// A checagem de Q3 é feita se for a página atual e se for um dos votos que NÃO pulam a página
-		if (currentPage === 3 && !q3) {
-			// Verifica se a Q2 foi respondida com voto no 1º e 2º turno, ou voto só no 2º turno
-			const q2Val = document.querySelector('input[name="question2"]:checked')?.value;
-			if (q2Val === 'votou_1e2' || q2Val === 'votou_2') {
-				alert("Por favor, responda à pergunta acima.");
-				return false;
-			}
-			// Se Q2 foi 'votou_1', 'nao_votou' ou 'nao_podia_votar', o navigatePage já pula, então não chega aqui.
-		}
-		if (currentPage === 4 && !q4) {
-			alert("Por favor, responda à pergunta acima.");
-			return false;
-		}
+    // --- PÁGINA 2 ---
+    if (currentPage === 2 && !q2) {
+        alert("Por favor, responda à pergunta acima.");
+        return false;
+    }
 
-		if (currentPage === 5) {
-			if (!q5_jornal_diario || !q5_jornais_tv || !q5_jornais_radio || !q5_internet || 
-				!q5_redes_sociais || !q5_conversas || !q5_ia) {
-				alert("Por favor, responda a todas as linhas da tabela acima.");
-				return false;
-			}
-		}
+    // --- PÁGINA 3 (só se não pulou) ---
+    if (currentPage === 3 && !q3) {
+        const q2Val = document.querySelector('input[name="question2"]:checked')?.value;
+        if (q2Val === 'votou_1e2' || q2Val === 'votou_2') {
+            alert("Por favor, responda à pergunta acima.");
+            return false;
+        }
+    }
 
-		if (currentPage === 6 && !q6) {
-			alert("Por favor, responda à pergunta acima.");
-			return false;
-		}
-		if (currentPage === 7 && !q7) {
-			alert("Por favor, responda à pergunta acima.");
-			return false;
-		}
-		
-		if (currentPage === 8) {
-			if (!q8Value) { // Corrigido
-				alert("Por favor, responda à pergunta acima.");
-				return false;
-			}
-		}
-		
-		if (currentPage === 9 && !q9) {
-			alert("Por favor, responda à pergunta acima.");
-			return false;
-		}
+    // --- PÁGINA 4 ---
+    if (currentPage === 4 && !q4) {
+        alert("Por favor, responda à pergunta acima.");
+        return false;
+    }
 
-		if (currentPage === 10 && !d_regiao) {
-			alert("Por favor, responda à pergunta acima.");
-			return false;
-		}
-		if (currentPage === 11 && !d_cor) {
-			alert("Por favor, responda à pergunta acima.");
-			return false;
-		}
-		if (currentPage === 12 && !d_genero) {
-			alert("Por favor, responda à pergunta acima.");
-			return false;
-		}
-		if (currentPage === 13 && !d_faixa) {
-			alert("Por favor, responda à pergunta acima.");
-			return false;
-		}
-		if (currentPage === 14 && !d_renda) {
-			alert("Por favor, responda à pergunta acima.");
-			return false;
-		}
-		if (currentPage === 15 && !d_religiao) {
-			alert("Por favor, responda à pergunta acima.");
-			return false;
-		}
-		if (currentPage === 16 && !d_escolaridade) {
-			alert("Por favor, responda à pergunta acima.");
-			return false;
-		}
+    // --- PÁGINA 5 (TABELA) ---
+    if (currentPage === 5) {
+        if (!q5_jornal_diario || !q5_jornais_tv || !q5_jornais_radio ||
+            !q5_internet || !q5_redes_sociais || !q5_conversas || !q5_ia) {
+            alert("Por favor, responda a todas as linhas da tabela acima.");
+            return false;
+        }
+    }
 
-		return true;
-	}
+    // --- PÁGINAS 6–9 ---
+    if (currentPage === 6 && !q6) {
+        alert("Por favor, responda à pergunta acima.");
+        return false;
+    }
+    if (currentPage === 7 && !q7) {
+        alert("Por favor, responda à pergunta acima.");
+        return false;
+    }
+    if (currentPage === 8 && !q8Value) {
+        // atenção: AGORA não força marcar "julgar_crimes", só checa se respondeu
+        alert("Por favor, responda à pergunta acima.");
+        return false;
+    }
+    if (currentPage === 9 && !q9) {
+        alert("Por favor, responda à pergunta acima.");
+        return false;
+    }
+
+    // --- DEMOGRAFIA ---
+    if (currentPage === 10 && !d_regiao) {
+        alert("Por favor, responda à pergunta acima.");
+        return false;
+    }
+    if (currentPage === 11 && !d_cor) {
+        alert("Por favor, responda à pergunta acima.");
+        return false;
+    }
+    if (currentPage === 12 && !d_genero) {
+        alert("Por favor, responda à pergunta acima.");
+        return false;
+    }
+    if (currentPage === 13 && !d_faixa) {
+        alert("Por favor, responda à pergunta acima.");
+        return false;
+    }
+    if (currentPage === 14 && !d_renda) {
+        alert("Por favor, responda à pergunta acima.");
+        return false;
+    }
+    if (currentPage === 15 && !d_religiao) {
+        alert("Por favor, responda à pergunta acima.");
+        return false;
+    }
+    if (currentPage === 16 && !d_escolaridade) {
+        alert("Por favor, responda à pergunta acima.");
+        return false;
+    }
+
+    return true;
+}
+
 
 	function buildSurveyPayload() {
 		const question1 = document.querySelector('input[name="question1"]:checked')?.value || null;
@@ -1616,7 +1616,7 @@ function showCompletionMessage() {
             // Conta quantos registros existem na tabela 'survey_responses'
             // head: true significa que não baixamos os dados, apenas contamos (mais rápido e seguro)
             const { data: count, error } = await supabaseClient.rpc('get_response_count');
-// E então verifica: if (count >= 200) ...
+// E então verifica: if (count >= 220) ...
 
             if (error) {
                 console.error('Erro ao verificar limite:', error);
@@ -1627,7 +1627,7 @@ function showCompletionMessage() {
 
             console.log("Total de respostas encontradas:", count);
 
-            if (count >= 200) {
+            if (count >= 220) {
                 // SE O LIMITE FOI ATINGIDO:
                 document.body.innerHTML = `
                     <div style="text-align: center; margin-top: 100px; font-family: Arial, sans-serif;">
