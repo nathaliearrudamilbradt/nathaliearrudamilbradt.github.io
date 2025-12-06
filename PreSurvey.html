@@ -1400,8 +1400,6 @@ function showCompletionMessage() {
 		const q5_jornal_diario = document.querySelector('input[name="q5_jornal_diario"]:checked')?.value;
 		const q5_jornais_tv = document.querySelector('input[name="q5_jornais_tv"]:checked')?.value;
 		const q5_jornais_radio = document.querySelector('input[name="q5_jornais_radio"]:checked')?.value;
-		const q5_celular = document.querySelector('input[name="q5_celular"]:checked')?.value;
-		const q5_email = document.querySelector('input[name="q5_email"]:checked')?.value;
 		const q5_internet = document.querySelector('input[name="q5_internet"]:checked')?.value;
 		const q5_redes_sociais = document.querySelector('input[name="q5_redes_sociais"]:checked')?.value;
 		const q5_conversas = document.querySelector('input[name="q5_conversas"]:checked')?.value;
@@ -1459,8 +1457,8 @@ function showCompletionMessage() {
 		}
 
 		if (currentPage === 5) {
-			if (!q5_jornal_diario || !q5_jornais_tv || !q5_jornais_radio || !q5_celular ||
-				!q5_email || !q5_internet || !q5_redes_sociais || !q5_conversas || !q5_ia) {
+			if (!q5_jornal_diario || !q5_jornais_tv || !q5_jornais_radio || !q5_internet || 
+				!q5_redes_sociais || !q5_conversas || !q5_ia) {
 				alert("Por favor, responda a todas as linhas da tabela acima.");
 				return false;
 			}
@@ -1529,8 +1527,6 @@ function showCompletionMessage() {
 			q5_jornal_diario: document.querySelector('input[name="q5_jornal_diario"]:checked')?.value || null,
 			q5_jornais_tv: document.querySelector('input[name="q5_jornais_tv"]:checked')?.value || null,
 			q5_jornais_radio: document.querySelector('input[name="q5_jornais_radio"]:checked')?.value || null,
-			q5_celular: document.querySelector('input[name="q5_celular"]:checked')?.value || null,
-			q5_email: document.querySelector('input[name="q5_email"]:checked')?.value || null,
 			q5_internet: document.querySelector('input[name="q5_internet"]:checked')?.value || null,
 			q5_redes_sociais: document.querySelector('input[name="q5_redes_sociais"]:checked')?.value || null,
 			q5_conversas: document.querySelector('input[name="q5_conversas"]:checked')?.value || null,
