@@ -598,7 +598,6 @@
     <p>
         Caso você tenha interesse e disponibilidade para participar da segunda fase deste estudo, que consiste em uma entrevista de 30 minutos com a pesquisadora, por favor deixe seu email abaixo para ser contactado(a).
         Seus dados não serão compartilhados com ninguém.
-        <br/>Caso você tenha interesse e disponibilidade para participar da segunda fase deste estudo, que consiste em uma entrevista de 30 minutos com a pesquisadora, por favor deixe seu email abaixo para ser contactado(a).
         
     </p>
     <input type="email" id="participant-email" placeholder="seuemail@exemplo.com" 
@@ -688,6 +687,10 @@
 
 	let conversationHistory = [];
 	let prolificPID = '';
+	    // Guarda qual índice de pergunta foi usado em cada categoria
+    // Ex: selectedQuestionIndices[2] = 1  -> categoria 2 ("Economia"), pergunta índice 1 (jornada 6x1)
+    const selectedQuestionIndices = {};
+
 
 	// Modos de IA – 1 = sem IA, 2 = IA "crua", 3 = neutra, 4 = opinativa
 	let IA_MODE = null;
@@ -815,19 +818,12 @@
         // 2. Não votou em nenhum turno ('nao_votou')
         // 3. Não podia votar ('nao_podia_votar')
 		const q2Val = document.querySelector('input[name="question2"]:checked')?.value;
-        const shouldSkipQ3 = (q2Val === 'votou_1' || q2Val === 'nao_votou' || q2Val === 'nao_podia_votar');
+        const skipQ3 = (q2Val === 'votou_1' || q2Val === 'nao_votou' || q2Val === 'nao_podia_votar');
 
-		if (shouldSkipQ3) {
-			// Indo pra frente (de Q2 para Q3), pula para Q4
-			if (currentPage === 3 && step > 0) {
-				currentPage = 4;
-			}
-			// Voltando (de Q4 para Q3), pula para Q2
-			if (currentPage === 3 && step < 0) {
-				currentPage = 2;
-			}
-		}
-
+        if (currentPage === 3 && skipQ3) {
+            // Se tentaria cair na Q3, mandamos direto pra Q4 (indo) ou Q2 (voltando)
+            currentPage = step > 0 ? 4 : 2;
+        }
 		if (currentPage <= totalPages) {
 			const nextDiv = document.getElementById(`question-${currentPage}`);
 			if (nextDiv) nextDiv.style.display = "block";
@@ -894,6 +890,7 @@
 		const category = categories[currentCategoryIndex];
 		currentQuestionIndex = Math.floor(Math.random() * category.questions.length);
 		currentQuestion = category.questions[currentQuestionIndex];
+		selectedQuestionIndices[currentCategoryIndex] = currentQuestionIndex;
 
 		if (IA_MODE === 1) {
 			// Sem IA
@@ -1052,7 +1049,7 @@
 		updateNavigationButtons();
 	}
 
-	function showCompletionMessage() {
+		function showCompletionMessage() {
 		const surveyQuestions = document.getElementById('survey-questions');
 		if (surveyQuestions) surveyQuestions.style.display = "none";
 
@@ -1060,12 +1057,69 @@
 		const finalMessage = document.createElement('div');
 		finalMessage.style.textAlign = "center";
 		finalMessage.style.marginTop = "50px";
-		finalMessage.style.fontSize = "24px";
-		finalMessage.style.color = "green";
-		finalMessage.style.fontWeight = "bold";
-		finalMessage.innerHTML = "Obrigado(a) por completar o experimento!<br><br>Por favor, responda a <a href='https://forms.gle/kHEHG1qR7cVK86hp9' target='_blank'>pesquisa</a>";
+		finalMessage.style.fontSize = "18px";
+		finalMessage.style.color = "#333";
+		finalMessage.style.fontWeight = "normal";
+
+        // Descobre o índice da categoria "Economia"
+        const economiaIndex = categories.findIndex(c => c.name === "Economia");
+        const economiaQuestionIndex = economiaIndex !== -1
+            ? selectedQuestionIndices[economiaIndex]
+            : null;
+
+        // Sempre mostra a consulta de 8 de janeiro
+        let linksHtml = `
+            <ul style="list-style: none; padding: 0; margin-top: 16px;">
+                <li style="margin-bottom: 8px;">
+                    • Consulta pública sobre liberação de presos envolvidos com o 8 de janeiro:
+                    <br>
+                    <a href="https://www12.senado.leg.br/ecidadania/visualizacaomateria?id=160575" target="_blank">
+                        https://www12.senado.leg.br/ecidadania/visualizacaomateria?id=160575
+                    </a>
+                </li>
+        `;
+
+        // Se a pessoa recebeu a pergunta da taxação de grandes fortunas (índice 0 em "Economia")
+        if (economiaQuestionIndex === 0) {
+            linksHtml += `
+                <li style="margin-bottom: 8px;">
+                    • Consulta pública sobre taxação de grandes fortunas:
+                    <br>
+                    <a href="https://www12.senado.leg.br/ecidadania/visualizacaomateria?id=137929" target="_blank">
+                        https://www12.senado.leg.br/ecidadania/visualizacaomateria?id=137929
+                    </a>
+                </li>
+            `;
+        }
+
+        // Se a pessoa recebeu a pergunta da jornada 6x1 (índice 1 em "Economia")
+        if (economiaQuestionIndex === 1) {
+            linksHtml += `
+                <li style="margin-bottom: 8px;">
+                    • Consulta pública sobre a jornada de trabalho 6x1:
+                    <br>
+                    <a href="https://www12.senado.leg.br/ecidadania/visualizacaoideia?id=209426" target="_blank">
+                        https://www12.senado.leg.br/ecidadania/visualizacaoideia?id=209426
+                    </a>
+                </li>
+            `;
+        }
+
+        linksHtml += `</ul>`;
+
+		finalMessage.innerHTML = `
+            <h2 style="color:#2e7d32; font-size:22px;">Obrigada por participar!</h2>
+            <p>
+                Sua participação ajuda a entender melhor como as pessoas formam opiniões políticas em diálogo com ferramentas de inteligência artificial.
+            </p>
+            <p>
+                Se você tiver interesse em se engajar mais na vida democrática no Brasil, aqui vão algumas sugestões de consultas públicas no portal e-Cidadania do Senado Federal:
+            </p>
+            ${linksHtml}
+        `;
 		body.appendChild(finalMessage);
 	}
+
 
 	function resetChatbox() {
 		const chatbox = document.getElementById('chatbox');
