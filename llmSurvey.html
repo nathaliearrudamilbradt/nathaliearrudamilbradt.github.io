@@ -3,117 +3,92 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Pesquisa</title>
+<title>Pesquisa de Opinião</title>
 <style>
-	body {
-		font-family: 'Arial', sans-serif;
-		margin: 20px;
-		background: #f4f4f4;
-		color: #333;
-	}
-	h1 {
-		text-align: center;
-		color: #444;
-	}
-	#timer {
-		font-size: 18px;
-		color: #000000;
-		text-align: center;
-		margin-bottom: 10px;
-	}
+	body { font-family: 'Arial', sans-serif; margin: 20px; background: #f4f4f4; color: #333; }
+	h1 { text-align: center; color: #444; }
+	#timer { font-size: 18px; color: #000; text-align: center; margin-bottom: 10px; }
 	#chatbox {
-		border: 2px solid #ddd;
-		border-radius: 10px;
-		padding: 15px;
-		background: #fff;
-		height: 400px;
-		overflow-y: auto;
-		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-		margin-bottom: 10px;
-		font-size: 16px;
-		white-space: pre-wrap;
-		word-wrap: break-word;
+		border: 2px solid #ddd; border-radius: 10px; padding: 15px; background: #fff;
+		height: 400px; overflow-y: auto; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+		margin-bottom: 10px; font-size: 16px; white-space: pre-wrap; word-wrap: break-word;
 	}
 	#user-input {
-		width: calc(100% - 80px);
-		padding: 10px;
-		font-size: 16px;
-		border: 2px solid #ddd;
-		border-radius: 20px;
-		outline: none;
-		box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+		width: calc(100% - 80px); padding: 10px; font-size: 16px; border: 2px solid #ddd;
+		border-radius: 20px; outline: none; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 	}
-	#user-input:focus {
-		border-color: #ff5733;
-		box-shadow: 0 0 8px rgba(255, 87, 51, 0.5);
-	}
-	.message {
-		margin: 10px 0;
-		padding: 10px;
-		border-radius: 10px;
-		max-width: 80%;
-		line-height: 1.5;
-		word-wrap: break-word;
-	}
-	.user {
-		background: #cce5ff;
-		align-self: flex-end;
-		color: #004085;
-	}
-	.assistant {
-		background: #f8d7da;
-		align-self: flex-start;
-		color: #721c24;
-	}
-	.message.user {
-		text-align: right;
-		margin-left: auto;
-	}
-	.message.ai {
-		text-align: left;
-		margin-right: auto;
-	}
-	#final-question {
-		font-size: 20px;
-		font-weight: bold;
-		margin-bottom: 16px;
-	}
-	#vote-message {
-		font-size: 16px;
-		color: #28a745;
-		font-weight: bold;
-	}
+	.message { margin: 10px 0; padding: 10px; border-radius: 10px; max-width: 80%; line-height: 1.5; }
+	.user { background: #cce5ff; align-self: flex-end; color: #004085; text-align: right; margin-left: auto; }
+	.assistant { background: #f8d7da; align-self: flex-start; color: #721c24; text-align: left; margin-right: auto; }
 	#description p {
-		font-size: 18px;
-		color: #333;
-		background-color: #f9f9f9;
-		padding: 15px;
-		border: 1px solid #ddd;
-		border-radius: 10px;
-		box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-		margin: 0 auto;
-		max-width: 700px;
+		font-size: 18px; color: #333; background-color: #f9f9f9; padding: 15px;
+		border: 1px solid #ddd; border-radius: 10px; margin: 0 auto; max-width: 700px;
 	}
 	.survey-container {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		height: 50vh;
-		background-color: #f9f9f9;
-		margin: 0 auto;
-		max-width: 50%;
-		display: none;
-		padding: 20px;
+		display: flex; justify-content: center; align-items: center;
+		background-color: #f9f9f9; margin: 0 auto; max-width: 800px; padding: 20px; display: none;
 	}
+    
+    /* Estilos da Escala Responsiva */
+    .scale-wrapper { display: flex; flex-direction: column; align-items: center; width: 100%; }
+    .scale-options { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    
+    /* Estilo para Tabela Likert (IA) */
+    .likert-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .likert-table th, .likert-table td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+    .likert-table th { background-color: #eee; }
+    .likert-row-label { text-align: left !important; width: 40%; }
+
+    /* Estilo para as caixas de Consulta Pública (Final) */
+    .consultation-box {
+        display: block;
+        background-color: #fff;
+        border: 2px solid #004085;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 15px 0;
+        text-decoration: none;
+        color: #333;
+        transition: transform 0.2s, box-shadow 0.2s;
+        cursor: pointer;
+    }
+    .consultation-box:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        background-color: #f0f8ff;
+    }
+    .consultation-title {
+        font-weight: bold;
+        color: #0056b3;
+        font-size: 16px;
+        margin-bottom: 5px;
+        display: block;
+    }
+    .consultation-url {
+        font-size: 12px;
+        color: #666;
+        display: block;
+    }
+
+    @media (max-width: 600px) {
+        .scale-options { flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start; width: 100%; padding-bottom: 10px; }
+        .scale-options label { flex: 0 0 auto; min-width: 30px; }
+        #ai-scale { flex-direction: column; gap: 10px !important; align-items: center; width: 100%; }
+        #ai-scale label { width: 80%; display: flex; flex-direction: row; justify-content: center; padding: 8px 0; border: 1px solid #ddd; border-radius: 5px; }
+        #ai-scale label input[type="radio"] { margin-right: 5px; }
+        
+        /* Ajuste tabela mobile */
+        .likert-table { font-size: 12px; }
+        .likert-table th, .likert-table td { padding: 4px; }
+    }
 </style>
 </head>
 <body>
 
-<!-- TERMO DE CONSENTIMENTO -->
 <div id="consent-section" style="margin-top: 50px;">
 	<p style="font-size: 18px; color: #555; line-height: 1.5; margin-bottom: 20px;">
 		<strong>Termo de consentimento </strong><br><br>
-		Você está sendo convidado(a) a participar de um estudo de pesquisa acadêmica. Sua participação é totalmente voluntária. Você pode decidir não participar ou interromper a participação a qualquer momento, sem qualquer penalização ou consequência.
+		Você está sendo convidado(a) a participar de um estudo de pesquisa acadêmica. Sua participação é totalmente voluntária.
 		<br><br>
 		<b>Propósito da Pesquisa.</b><br>
 		Este estudo faz parte de uma pesquisa acadêmica cujo objetivo é entender melhor como modelos de inteligência artificial podem influenciar opiniões e raciocínio político. Você está sendo convidado(a) porque tem mais de 18 anos e é brasileiro(a).
@@ -122,336 +97,56 @@
 		Durante o estudo, você verá uma série de cenários políticos hipotéticos e responderá perguntas sobre eles. Em alguns casos, poderá ser convidado(a) a interagir por alguns minutos com uma ferramenta automatizada com inteligência artificial antes de responder às perguntas. Ao final, você será solicitado(a) a registrar sua opinião.
 		<br><br>
 		<b>Duração.</b><br>
-		A participação envolverá aproximadamente 16 minutos do seu tempo.
+		A participação envolverá aproximadamente 10 minutos do seu tempo.
 		<br><br>
-		<b>Riscos.</b><br>
-		Não esperamos riscos associados à sua participação. O único possível desconforto pode ser o tempo necessário para concluir o estudo.
+		<b>Riscos e Benefícios.</b><br>
+		Não esperamos riscos associados à sua participação. Você não receberá benefícios diretos, mas contribuirá para a ciência.
 		<br><br>
-		<b>Benefícios.</b><br>
-		Você não receberá benefícios diretos por participar. Entretanto, sua colaboração contribuirá para pesquisas sobre tecnologia, opinião pública e política.
+		<b>Privacidade.</b><br>
+		Todas as suas respostas serão mantidas 100% confidenciais e anônimas.
 		<br><br>
-		<b>Privacidade e Confidencialidade.</b><br>
-		Todas as suas respostas serão mantidas 100% confidenciais. Nenhuma informação capaz de identificá-lo(a) será divulgada, e os dados poderão ser utilizados apenas de forma anônima em análises ou publicações acadêmicas. Apenas a pesquisadora responsável terá acesso às respostas individuais.
-		<br><br>
-		Em caso de dúvidas sobre o estudo, você pode entrar em contato com:
-		<br>
-		<i>Nathalie Arruda Milbradt (nathaliearrudamilbradt@college.harvard.edu)</i>
+		Em caso de dúvidas: <i>Nathalie Arruda Milbradt (nathaliearrudamilbradt@college.harvard.edu)</i>
 	</p>
-	<button id="accept-consent-btn" onclick="acceptConsent()" style="margin-right: 10px; padding: 10px 20px; font-size: 18px; cursor: pointer;">
-		Aceito os termos
-	</button>
-    <button id="decline-consent-btn" onclick="declineConsent()" style="padding: 10px 20px; font-size: 18px; cursor: pointer;">
-		Recuso os termos
-	</button>
+	<button onclick="acceptConsent()" style="margin-right: 10px; padding: 10px 20px; font-size: 18px; cursor: pointer;">Aceito os termos</button>
+    <button onclick="declineConsent()" style="padding: 10px 20px; font-size: 18px; cursor: pointer;">Recuso os termos</button>
 </div>
 
-<!-- INSTRUÇÕES DO EXPERIMENTO DE IA -->
 <div id="instructions" style="margin-top: 50px; display: none;">
 	<p style="font-size: 18px; color: #555; line-height: 1.5; margin-bottom: 20px;">
-		Em seguida, vamos apresentar algumas <strong>propostas políticas</strong>. Em cada uma delas, queremos saber o quanto você é a favor ou contra.
+		Em seguida, vamos apresentar algumas <strong>propostas políticas</strong>.
 		<br><br>
-		Para ajudar na decisão, em alguns casos você poderá conversar com um <strong>assistente de inteligência artificial (IA)</strong>, semelhante a ferramentas como o ChatGPT.
+		Para ajudar na decisão, em alguns casos você poderá conversar com um <strong>assistente de inteligência artificial (IA)</strong>.
 		<br><br>
-		Você poderá pedir que a IA explique a proposta, apresente prós e contras, debata o tema com você, ou ajude a pensar em argumentos.
-		<br><br>
-		Quando o chatbot estiver disponível, pedimos que você converse com ele por <strong>pelo menos 3 minutos</strong>. Um <strong>cronômetro</strong> será exibido e, após esse tempo, você poderá registrar sua resposta.
+		Quando o chatbot estiver disponível, pedimos que você converse com ele por <strong>pelo menos 3 minutos</strong>.
 	</p>
-	<button id="start-btn" onclick="start()" style="margin-right: 10px; padding: 10px 20px; font-size: 18px; cursor: pointer;">
-		Iniciar
-	</button>
+	<button onclick="startExperiment()" style="margin-right: 10px; padding: 10px 20px; font-size: 18px; cursor: pointer;">Iniciar</button>
 </div>
 
-<!-- DESCRIÇÃO / TEXTO DA PROPOSTA DURANTE EXPERIMENTO DE IA -->
-<div id="description" style="text-align: center; margin-bottom: 20px; display: none;">
-	<p style="font-size: 18px; color: #555; line-height: 1.5;">
-		<b>Primeiro, por favor responda às perguntas iniciais sobre você.</b>
-	</p>
-</div>
-
-<!-- BLOCO DE RESPOSTA À PROPOSTA (ESCALA) -->
-<div id="question-box" style="display: none; text-align: center; margin-top: 20px; margin-bottom: 30px;">
-	<p id="final-question"></p>
-
-	<div id="ai-scale" style="display: flex; justify-content: center; gap: 24px; margin-bottom: 16px; flex-wrap: wrap;">
-		<label style="display:flex; flex-direction:column; align-items:center; font-size: 14px;">
-			<input type="radio" name="ai_vote" value="discordo_fortemente">
-			<span>Não deveria<br>de forma alguma</span>
-		</label>
-		<label style="display:flex; flex-direction:column; align-items:center; font-size: 14px;">
-			<input type="radio" name="ai_vote" value="discordo">
-			<span>Provavelmente<br>não deveria</span>
-		</label>
-		<label style="display:flex; flex-direction:column; align-items:center; font-size: 14px;">
-			<input type="radio" name="ai_vote" value="neutro">
-			<span>Não tenho posição</span>
-		</label>
-		<label style="display:flex; flex-direction:column; align-items:center; font-size: 14px;">
-			<input type="radio" name="ai_vote" value="concordo">
-			<span>Provavelmente<br>deveria</span>
-		</label>
-		<label style="display:flex; flex-direction:column; align-items:center; font-size: 14px;">
-			<input type="radio" name="ai_vote" value="concordo_fortemente">
-			<span>Deveria<br>totalmente</span>
-		</label>
-	</div>
-
-	<button id="submit-vote-btn" style="padding: 10px 20px; font-size: 16px; cursor: pointer;" disabled>
-		Enviar resposta
-	</button>
-
-	<p id="vote-message" style="margin-top: 20px; font-size: 16px; color: green; display: none;"></p>
-</div>
-
-<!-- TIMER + CHAT -->
-<div id="timer" style="display: none;">
-	Please spend the remaining time <strong>chatting with our AI Assistant</strong> about this issue before deciding on your answer:
-	<span style="color: red;">3:00</span>
-</div>
-<div id="chatbox" style="display: none;"></div>
-<input id="user-input" placeholder="Type your message here..." style="display: none;" type="text"/>
-
-<!-- PARTE 1 (Q1–Q9) + DEMOGRAFIA (Q10–Q16) -->
 <div class="survey-container">
-	<div id="survey-questions" style="display: none; text-align: left; margin-top: 20px;">
-
-		<!-- Q1 – Screener Brasil + idade -->
-		<div class="survey-page" id="question-1" style="display: block;">
-			
+	<div id="survey-questions" style="display: none; text-align: left; margin-top: 20px; width: 100%;">
+        
+        <div class="survey-page" id="page-1" style="display: block;">
 			<p>Qual das opções descreve melhor você?</p>
-			<div style="text-align: left; display: inline-block;">
-				<input id="q1_opt1" name="question1" type="radio" value="br_18plus"/>
-				<label for="q1_opt1">Sou brasileira(o) e tenho 18 anos ou mais</label><br/>
-				<input id="q1_opt2" name="question1" type="radio" value="br_under18"/>
-				<label for="q1_opt2">Sou brasileira(o) e tenho menos de 18 anos</label><br/>
-				<input id="q1_opt3" name="question1" type="radio" value="not_brazilian"/>
-				<label for="q1_opt3">Não sou brasileira(o)</label><br/>
+			<div style="text-align: left;">
+				<input id="q1_opt1" name="question1" type="radio" value="br_18plus"/><label for="q1_opt1">Sou brasileira(o) e tenho 18 anos ou mais</label><br/>
+				<input id="q1_opt2" name="question1" type="radio" value="br_under18"/><label for="q1_opt2">Sou brasileira(o) e tenho menos de 18 anos</label><br/>
+				<input id="q1_opt3" name="question1" type="radio" value="not_brazilian"/><label for="q1_opt3">Não sou brasileira(o)</label><br/>
 			</div>
 		</div>
 
-		<!-- Q1b – texto introdutório pós-screener -->
-		<div class="survey-page" id="question-1b" style="display:none;">
-			<h2>Informações Importantes</h2>
-			<p>
-				As próximas perguntas têm como objetivo compreender padrões de comportamento político e eleitoral no Brasil.
-				Suas respostas são totalmente anônimas e serão utilizadas exclusivamente para fins acadêmicos.
-				Não há respostas certas ou erradas, e sua participação é voluntária.
-			</p>
-		</div>
-
-		<!-- Q2 – Participação eleição 2022 -->
-		<div class="survey-page" id="question-2" style="display: none;">
-			
-			<p>Na eleição de 2022 para presidente, você:</p>
-			<div style="text-align: left; display: inline-block;">
-				<input id="q2_a" name="question2" type="radio" value="votou_1e2"/>
-				<label for="q2_a">Votou no 1º e no 2º turno</label><br/>
-				<input id="q2_b" name="question2" type="radio" value="votou_1"/>
-				<label for="q2_b">Votou somente no 1º turno</label><br/>
-				<input id="q2_c" name="question2" type="radio" value="votou_2"/>
-				<label for="q2_c">Votou somente no 2º turno</label><br/>
-				<input id="q2_d" name="question2" type="radio" value="nao_votou"/>
-				<label for="q2_d">Não votou em nenhum turno</label><br/>
-				<input id="q2_e" name="question2" type="radio" value="nao_podia_votar"/>
-				<label for="q2_e">Não podia votar na época (idade, não era eleitor etc.)</label><br/>
+        <div class="survey-page" id="page-2" style="display: none;">
+			<p>Qual é o seu gênero?</p>
+			<div style="text-align: left;">
+				<input name="demo_genero" type="radio" value="feminino"/> Feminino<br/>
+				<input name="demo_genero" type="radio" value="masculino"/> Masculino<br/>
+				<input name="demo_genero" type="radio" value="outro"/> Outro<br/>
+				<input name="demo_genero" type="radio" value="prefiro_nao_responder"/> Prefiro não responder<br/>
 			</div>
 		</div>
 
-		<!-- Q3 – Voto 2º turno -->
-		<div class="survey-page" id="question-3" style="display: none;">
-			
-			<p>Em quem você votou para presidente no segundo turno da eleição de 2022?</p>
-			<div style="text-align: left; display: inline-block;">
-				<input id="q3_a" name="question3" type="radio" value="lula"/>
-				<label for="q3_a">Luiz Inácio Lula da Silva (PT)</label><br/>
-				<input id="q3_b" name="question3" type="radio" value="bolsonaro"/>
-				<label for="q3_b">Jair Bolsonaro (PL)</label><br/>
-				<input id="q3_c" name="question3" type="radio" value="branco_nulo"/>
-				<label for="q3_c">Votei em branco / nulo</label><br/>
-				<input id="q3_d" name="question3" type="radio" value="nao_compareci"/>
-				<label for="q3_d">Não votei / não compareci</label><br/>
-				<input id="q3_e" name="question3" type="radio" value="prefiro_nao_responder"/>
-				<label for="q3_e">Prefiro não responder</label><br/>
-			</div>
-		</div>
-
-		<!-- Q4 – Escala esquerda–direita -->
-		<div class="survey-page" id="question-4" style="display: none;">
-			
-			<p>
-				Em uma escala de 1 a 10, na qual 1 significa “esquerda” e 10 significa “direita”,
-				onde você diria que suas opiniões políticas se encaixam melhor?
-			</p>
-			<div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
-				<div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
-					<label><input type="radio" id="q4_1" name="question4" value="1"><span>1</span></label>
-					<label><input type="radio" id="q4_2" name="question4" value="2"><span>2</span></label>
-					<label><input type="radio" id="q4_3" name="question4" value="3"><span>3</span></label>
-					<label><input type="radio" id="q4_4" name="question4" value="4"><span>4</span></label>
-					<label><input type="radio" id="q4_5" name="question4" value="5"><span>5</span></label>
-					<label><input type="radio" id="q4_6" name="question4" value="6"><span>6</span></label>
-					<label><input type="radio" id="q4_7" name="question4" value="7"><span>7</span></label>
-					<label><input type="radio" id="q4_8" name="question4" value="8"><span>8</span></label>
-					<label><input type="radio" id="q4_9" name="question4" value="9"><span>9</span></label>
-					<label><input type="radio" id="q4_10" name="question4" value="10"><span>10</span></label>
-				</div>
-				<div style="display:flex; justify-content:space-between; width:100%; max-width:600px; font-size:13px; margin-top:4px;">
-					<span>1 (ESQUERDA)</span>
-					<span>10 (DIREITA)</span>
-				</div>
-			</div>
-		</div>
-
-		<!-- Q5 – Uso de fontes de informação (tabela) -->
-		<div class="survey-page" id="question-5" style="display: none;">
-			
-			<p>
-				As pessoas usam diferentes fontes para se informar sobre o que está acontecendo no Brasil e no mundo.
-				Para cada uma das seguintes fontes, indique com que frequência você utiliza.
-			</p>
-			<table style="border-collapse: collapse; width: 100%; max-width: 800px; font-size: 14px;">
-				<thead>
-					<tr>
-						<th style="border: 1px solid #ccc; padding: 4px;">Fonte</th>
-						<th style="border: 1px solid #ccc; padding: 4px;">Diariamente</th>
-						<th style="border: 1px solid #ccc; padding: 4px;">Semanalmente</th>
-						<th style="border: 1px solid #ccc; padding: 4px;">Mensalmente</th>
-						<th style="border: 1px solid #ccc; padding: 4px;">Menos que mensalmente</th>
-						<th style="border: 1px solid #ccc; padding: 4px;">Nunca</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td style="border: 1px solid #ccc; padding: 4px;">Jornal diário</td>
-						<td style="text-align: center; border: 1px solid #ccc;"><input name="q5_jornal_diario" type="radio" value="diariamente"/></td>
-						<td style="text-align: center; border: 1px solid #ccc;"><input name="q5_jornal_diario" type="radio" value="semanalmente"/></td>
-						<td style="text-align: center; border: 1px solid #ccc;"><input name="q5_jornal_diario" type="radio" value="mensalmente"/></td>
-						<td style="text-align: center; border: 1px solid #ccc;"><input name="q5_jornal_diario" type="radio" value="menos_que_mensalmente"/></td>
-						<td style="text-align: center; border: 1px solid #ccc;"><input name="q5_jornal_diario" type="radio" value="nunca"/></td>
-					</tr>
-					<tr>
-						<td style="border: 1px solid #ccc; padding: 4px;">Jornais de TV</td>
-						<td style="text-align: center; border: 1px solid #ccc;"><input name="q5_jornais_tv" type="radio" value="diariamente"/></td>
-						<td style="text-align: center; border: 1px solid #ccc;"><input name="q5_jornais_tv" type="radio" value="semanalmente"/></td>
-						<td style="text-align: center; border: 1px solid #ccc;"><input name="q5_jornais_tv" type="radio" value="mensalmente"/></td>
-						<td style="text-align: center; border: 1px solid #ccc;"><input name="q5_jornais_tv" type="radio" value="menos_que_mensalmente"/></td>
-						<td style="text-align: center; border: 1px solid #ccc;"><input name="q5_jornais_tv" type="radio" value="nunca"/></td>
-					</tr>
-					<tr>
-						<td style="border: 1px solid #ccc; padding: 4px;">Jornais de rádio</td>
-						<td style="text-align: center; border: 1px solid #ccc;"><input name="q5_jornais_radio" type="radio" value="diariamente"/></td>
-						<td style="text-align: center; border: 1px solid #ccc;"><input name="q5_jornais_radio" type="radio" value="semanalmente"/></td>
-						<td style="text-align: center; border: 1px solid #ccc;"><input name="q5_jornais_radio" type="radio" value="mensalmente"/></td>
-						<td style="text-align: center; border: 1px solid #ccc;"><input name="q5_jornais_radio" type="radio" value="menos_que_mensalmente"/></td>
-						<td style="text-align: center; border: 1px solid #ccc;"><input name="q5_jornais_radio" type="radio" value="nunca"/></td>
-					</tr>
-					<tr>
-						<td style="border: 1px solid #ccc; padding: 4px;">Celular</td>
-						<td style="text-align: center; border: 1px solid #ccc;"><input name="q5_celular" type="radio" value="diariamente"/></td>
-						<td style="text-align: center; border: 1px solid #ccc;"><input name="q5_celular" type="radio" value="semanalmente"/></td>
-						<td style="text-align: center; border: 1px solid #ccc;"><input name="q5_celular" type="radio" value="mensalmente"/></td>
-						<td style="text-align: center; border: 1px solid #ccc;"><input name="q5_celular" type="radio" value="menos_que_mensalmente"/></td>
-						<td style="text-align: center; border: 1px solid #ccc;"><input name="q5_celular" type="radio" value="nunca"/></td>
-					</tr>
-					<tr>
-						<td style="border: 1px solid #ccc; padding: 4px;">Email</td>
-						<td style="text-align: center; border: 1px solid #ccc;"><input name="q5_email" type="radio" value="diariamente"/></td>
-						<td style="text-align: center; border: 1px solid #ccc;"><input name="q5_email" type="radio" value="semanalmente"/></td>
-						<td style="text-align: center; border: 1px solid #ccc;"><input name="q5_email" type="radio" value="mensalmente"/></td>
-						<td style="text-align: center; border: 1px solid #ccc;"><input name="q5_email" type="radio" value="menos_que_mensalmente"/></td>
-						<td style="text-align: center; border: 1px solid #ccc;"><input name="q5_email" type="radio" value="nunca"/></td>
-					</tr>
-					<tr>
-						<td style="border: 1px solid #ccc; padding: 4px;">Internet</td>
-						<td style="text-align: center; border: 1px solid #ccc;"><input name="q5_internet" type="radio" value="diariamente"/></td>
-						<td style="text-align: center; border: 1px solid #ccc;"><input name="q5_internet" type="radio" value="semanalmente"/></td>
-						<td style="text-align: center; border: 1px solid #ccc;"><input name="q5_internet" type="radio" value="mensalmente"/></td>
-						<td style="text-align: center; border: 1px solid #ccc;"><input name="q5_internet" type="radio" value="menos_que_mensalmente"/></td>
-						<td style="text-align: center; border: 1px solid #ccc;"><input name="q5_internet" type="radio" value="nunca"/></td>
-					</tr>
-					<tr>
-						<td style="border: 1px solid #ccc; padding: 4px;">Redes sociais (Facebook, X/Twitter, etc.)</td>
-						<td style="text-align: center; border: 1px solid #ccc;"><input name="q5_redes_sociais" type="radio" value="diariamente"/></td>
-						<td style="text-align: center; border: 1px solid #ccc;"><input name="q5_redes_sociais" type="radio" value="semanalmente"/></td>
-						<td style="text-align: center; border: 1px solid #ccc;"><input name="q5_redes_sociais" type="radio" value="mensalmente"/></td>
-						<td style="text-align: center; border: 1px solid #ccc;"><input name="q5_redes_sociais" type="radio" value="menos_que_mensalmente"/></td>
-						<td style="text-align: center; border: 1px solid #ccc;"><input name="q5_redes_sociais" type="radio" value="nunca"/></td>
-					</tr>
-					<tr>
-						<td style="border: 1px solid #ccc; padding: 4px;">Conversas com amigos, familiares ou colegas</td>
-						<td style="text-align: center; border: 1px solid #ccc;"><input name="q5_conversas" type="radio" value="diariamente"/></td>
-						<td style="text-align: center; border: 1px solid #ccc;"><input name="q5_conversas" type="radio" value="semanalmente"/></td>
-						<td style="text-align: center; border: 1px solid #ccc;"><input name="q5_conversas" type="radio" value="mensalmente"/></td>
-						<td style="text-align: center; border: 1px solid #ccc;"><input name="q5_conversas" type="radio" value="menos_que_mensalmente"/></td>
-						<td style="text-align: center; border: 1px solid #ccc;"><input name="q5_conversas" type="radio" value="nunca"/></td>
-					</tr>
-					<tr>
-						<td style="border: 1px solid #ccc; padding: 4px;">Ferramentas de inteligência artificial (ChatGPT, Grok, Gemini, etc.)</td>
-						<td style="text-align: center; border: 1px solid #ccc;"><input name="q5_ia" type="radio" value="diariamente"/></td>
-						<td style="text-align: center; border: 1px solid #ccc;"><input name="q5_ia" type="radio" value="semanalmente"/></td>
-						<td style="text-align: center; border: 1px solid #ccc;"><input name="q5_ia" type="radio" value="mensalmente"/></td>
-						<td style="text-align: center; border: 1px solid #ccc;"><input name="q5_ia" type="radio" value="menos_que_mensalmente"/></td>
-						<td style="text-align: center; border: 1px solid #ccc;"><input name="q5_ia" type="radio" value="nunca"/></td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-
-		<!-- Q6 – STF constitucionalidade -->
-		<div class="survey-page" id="question-6" style="display: none;">
-			
-			<p>Quem é responsável por julgar se uma lei é constitucional no Brasil?</p>
-			<div style="text-align: left; display: inline-block;">
-				<input id="q6_a" name="question6" type="radio" value="camara"/><label for="q6_a">Câmara dos Deputados</label><br/>
-				<input id="q6_b" name="question6" type="radio" value="senado"/><label for="q6_b">Senado Federal</label><br/>
-				<input id="q6_c" name="question6" type="radio" value="stf"/><label for="q6_c">Supremo Tribunal Federal (STF)</label><br/>
-				<input id="q6_d" name="question6" type="radio" value="presidencia"/><label for="q6_d">Presidência da República</label><br/>
-				<input id="q6_e" name="question6" type="radio" value="nao_sei"/><label for="q6_e">Não sei / Não lembro</label><br/>
-			</div>
-		</div>
-
-		<!-- Q7 – Frequência eleições -->
-		<div class="survey-page" id="question-7" style="display: none;">
-			
-			<p>Com que frequência ocorrem eleições gerais (para presidente, governadores, deputados e senadores)?</p>
-			<div style="text-align: left; display: inline-block;">
-				<input id="q7_a" name="question7" type="radio" value="2anos"/><label for="q7_a">A cada 2 anos</label><br/>
-				<input id="q7_b" name="question7" type="radio" value="4anos"/><label for="q7_b">A cada 4 anos</label><br/>
-				<input id="q7_c" name="question7" type="radio" value="5anos"/><label for="q7_c">A cada 5 anos</label><br/>
-				<input id="q7_d" name="question7" type="radio" value="6anos"/><label for="q7_d">A cada 6 anos</label><br/>
-				<input id="q7_e" name="question7" type="radio" value="nao_sei"/><label for="q7_e">Não sei / Não lembro</label><br/>
-			</div>
-		</div>
-
-		<!-- Q8 – Trabalho do Congresso -->
-		<div class="survey-page" id="question-8" style="display: none;">
-			
-			<p>Qual das opções descreve melhor o trabalho do Congresso Nacional?</p>
-			<div style="text-align: left; display: inline-block;">
-				<input id="q8_a" name="question8" type="radio" value="criar_revisar_leis"/><label for="q8_a">Criar e revisar leis</label><br/>
-				<input id="q8_b" name="question8" type="radio" value="julgar_crimes"/><label for="q8_b">Julgar crimes</label><br/>
-				<input id="q8_c" name="question8" type="radio" value="sentencas_constitucionais"/><label for="q8_c">Definir sentenças constitucionais</label><br/>
-				<input id="q8_d" name="question8" type="radio" value="orcamento_estados_municipios"/><label for="q8_d">Administrar o orçamento de estados e municípios</label><br/>
-				<input id="q8_e" name="question8" type="radio" value="nao_sei"/><label for="q8_e">Não sei / Não lembro</label><br/>
-			</div>
-		</div>
-
-		<!-- Q9 – Cargo de Hugo Motta -->
-		<div class="survey-page" id="question-9" style="display: none;">
-			
-			<p>Você sabe qual cargo Hugo Motta ocupa atualmente?</p>
-			<div style="text-align: left; display: inline-block;">
-				<input id="q9_a" name="question9" type="radio" value="presidente_camara"/><label for="q9_a">Presidente da Câmara dos Deputados</label><br/>
-				<input id="q9_b" name="question9" type="radio" value="presidente_senado"/><label for="q9_b">Presidente do Senado Federal</label><br/>
-				<input id="q9_c" name="question9" type="radio" value="ministro_stf"/><label for="q9_c">Ministro do STF</label><br/>
-				<input id="q9_d" name="question9" type="radio" value="nao_sei"/><label for="q9_d">Não sei / Não lembro</label><br/>
-			</div>
-		</div>
-
-		<!-- Q10–Q16 – DEMOGRAFIA -->
-		<div class="survey-page" id="question-10" style="display: none;">
-			
+        <div class="survey-page" id="page-3" style="display: none;">
 			<p>Em qual região do Brasil você mora atualmente?</p>
-			<div style="text-align: left; display: inline-block;">
+			<div style="text-align: left;">
 				<input name="demo_regiao" type="radio" value="norte"/> Norte<br/>
 				<input name="demo_regiao" type="radio" value="nordeste"/> Nordeste<br/>
 				<input name="demo_regiao" type="radio" value="centro_oeste"/> Centro-Oeste<br/>
@@ -460,986 +155,710 @@
 			</div>
 		</div>
 
-		<div class="survey-page" id="question-11" style="display: none;">
-			
+        <div class="survey-page" id="page-4" style="display: none;">
+			<p>Qual é a sua faixa etária?</p>
+			<div style="text-align: left;">
+				<input name="demo_faixa_etaria" type="radio" value="18_24"/> 18 a 24 anos<br/>
+				<input name="demo_faixa_etaria" type="radio" value="25_34"/> 25 a 34 anos<br/>
+				<input name="demo_faixa_etaria" type="radio" value="35_44"/> 35 a 44 anos<br/>
+				<input name="demo_faixa_etaria" type="radio" value="45_54"/> 45 a 54 anos<br/>
+				<input name="demo_faixa_etaria" type="radio" value="55_mais"/> 55 anos ou mais<br/>
+			</div>
+		</div>
+
+        <div class="survey-page" id="page-5" style="display: none;">
 			<p>Como você se autodeclara em termos de cor ou raça?</p>
-			<div style="text-align: left; display: inline-block;">
+			<div>
 				<input name="demo_cor" type="radio" value="branca"/> Branca<br/>
 				<input name="demo_cor" type="radio" value="preta"/> Preta<br/>
 				<input name="demo_cor" type="radio" value="parda"/> Parda<br/>
 				<input name="demo_cor" type="radio" value="amarela"/> Amarela<br/>
 				<input name="demo_cor" type="radio" value="indigena"/> Indígena<br/>
 				<input name="demo_cor" type="radio" value="outra"/> Outra<br/>
-				<input name="demo_cor" type="radio" value="prefiro_nao_responder"/> Prefiro não responder<br/>
 			</div>
-		</div>
-
-		<div class="survey-page" id="question-12" style="display: none;">
-			
-			<p>Qual é o seu gênero?</p>
-			<div style="text-align: left; display: inline-block;">
-				<input name="demo_genero" type="radio" value="feminino"/> Feminino<br/>
-				<input name="demo_genero" type="radio" value="masculino"/> Masculino<br/>
-				<input name="demo_genero" type="radio" value="outro"/> Outro<br/>
-				<input name="demo_genero" type="radio" value="prefiro_nao_responder"/> Prefiro não responder<br/>
-			</div>
-		</div>
-
-		<div class="survey-page" id="question-13" style="display: none;">
-			
-			<p>Qual é a sua faixa etária?</p>
-			<div style="text-align: left; display: inline-block;">
-				<input name="demo_faixa_etaria" type="radio" value="18_24"/> 18 a 24 anos<br/>
-				<input name="demo_faixa_etaria" type="radio" value="25_34"/> 25 a 34 anos<br/>
-				<input name="demo_faixa_etaria" type="radio" value="35_44"/> 35 a 44 anos<br/>
-				<input name="demo_faixa_etaria" type="radio" value="45_59"/> 45 a 59 anos<br/>
-				<input name="demo_faixa_etaria" type="radio" value="60_mais"/> 60 anos ou mais<br/>
-			</div>
-		</div>
-
-		<div class="survey-page" id="question-14" style="display: none;">
-			
-			<p>Qual é a renda mensal total do seu domicílio (somando todas as pessoas que contribuem com renda)?</p>
-			<div style="text-align: left; display: inline-block;">
+            <br>
+            <p>Qual é a renda mensal total do seu domicílio?</p>
+			<div>
 				<input name="demo_renda" type="radio" value="ate_1sm"/> Até 1 salário mínimo<br/>
 				<input name="demo_renda" type="radio" value="1a2sm"/> Entre 1 e 2 salários mínimos<br/>
 				<input name="demo_renda" type="radio" value="2a5sm"/> Entre 2 e 5 salários mínimos<br/>
 				<input name="demo_renda" type="radio" value="5a10sm"/> Entre 5 e 10 salários mínimos<br/>
 				<input name="demo_renda" type="radio" value="mais_10sm"/> Mais de 10 salários mínimos<br/>
-				<input name="demo_renda" type="radio" value="prefiro_nao_responder"/> Prefiro não responder<br/>
 			</div>
 		</div>
 
-		<div class="survey-page" id="question-15" style="display: none;">
-			
+        <div class="survey-page" id="page-6" style="display: none;">
 			<p>Qual é a sua religião?</p>
-			<div style="text-align: left; display: inline-block;">
+			<div>
 				<input name="demo_religiao" type="radio" value="catolica"/> Católica<br/>
 				<input name="demo_religiao" type="radio" value="evangelica_pentecostal"/> Evangélica – Pentecostal<br/>
-				<input name="demo_religiao" type="radio" value="evangelica_nao_pentecostal"/> Evangélica – Não pentecostal (protestante histórico)<br/>
+				<input name="demo_religiao" type="radio" value="evangelica_nao_pentecostal"/> Evangélica – Não pentecostal<br/>
 				<input name="demo_religiao" type="radio" value="espirita"/> Espírita<br/>
 				<input name="demo_religiao" type="radio" value="umbanda_candomble"/> Umbanda / Candomblé<br/>
 				<input name="demo_religiao" type="radio" value="outra"/> Outra religião<br/>
 				<input name="demo_religiao" type="radio" value="sem_religiao"/> Sem religião<br/>
-				<input name="demo_religiao" type="radio" value="prefiro_nao_responder"/> Prefiro não responder<br/>
 			</div>
-		</div>
-
-		<div class="survey-page" id="question-16" style="display: none;">
-			
-			<p>Qual o nível mais alto de escolaridade que você completou?</p>
-			<div style="text-align: left; display: inline-block;">
+            <br>
+            <p>Qual o nível mais alto de escolaridade que você completou?</p>
+			<div>
 				<input name="demo_escolaridade" type="radio" value="fundamental_incompleto"/> Ensino fundamental incompleto<br/>
 				<input name="demo_escolaridade" type="radio" value="fundamental_completo"/> Ensino fundamental completo<br/>
-				<input name="demo_escolaridade" type="radio" value="medio_incompleto"/> Ensino médio (ou técnico) incompleto<br/>
-				<input name="demo_escolaridade" type="radio" value="medio_completo"/> Ensino médio (ou técnico) completo<br/>
+				<input name="demo_escolaridade" type="radio" value="medio_incompleto"/> Ensino médio incompleto<br/>
+				<input name="demo_escolaridade" type="radio" value="medio_completo"/> Ensino médio completo<br/>
 				<input name="demo_escolaridade" type="radio" value="superior_incompleto"/> Ensino superior incompleto<br/>
 				<input name="demo_escolaridade" type="radio" value="superior_completo"/> Ensino superior completo<br/>
-				<input name="demo_escolaridade" type="radio" value="pos_graduacao"/> Pós-graduação (mestrado, doutorado, especialização)<br/>
+				<input name="demo_escolaridade" type="radio" value="pos_graduacao"/> Pós-graduação<br/>
 			</div>
 		</div>
 
-		<!-- BOTÕES NAVEGAÇÃO PARTE 1 + DEMOGRAFIA -->
+        <div class="survey-page" id="page-7" style="display: none;">
+            <p>Para cada uma das afirmações abaixo, indique o quanto você concorda ou discorda:</p>
+            <table class="likert-table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Discordo totalmente</th>
+                        <th>Discordo</th>
+                        <th>Neutro</th>
+                        <th>Concordo</th>
+                        <th>Concordo totalmente</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="likert-row-label">Para transações rotineiras, eu preferiria interagir com um sistema de inteligência artificial em vez de um ser humano.</td>
+                        <td><input type="radio" name="q_ai_preference" value="1"></td>
+                        <td><input type="radio" name="q_ai_preference" value="2"></td>
+                        <td><input type="radio" name="q_ai_preference" value="3"></td>
+                        <td><input type="radio" name="q_ai_preference" value="4"></td>
+                        <td><input type="radio" name="q_ai_preference" value="5"></td>
+                    </tr>
+                    <tr>
+                        <td class="likert-row-label">Um agente de inteligência artificial seria melhor do que um funcionário em muitos trabalhos rotineiros.</td>
+                        <td><input type="radio" name="q_ai_better_worker" value="1"></td>
+                        <td><input type="radio" name="q_ai_better_worker" value="2"></td>
+                        <td><input type="radio" name="q_ai_better_worker" value="3"></td>
+                        <td><input type="radio" name="q_ai_better_worker" value="4"></td>
+                        <td><input type="radio" name="q_ai_better_worker" value="5"></td>
+                    </tr>
+                    <tr>
+                        <td class="likert-row-label">Eu sinto desconforto quando penso nos usos futuros da inteligência artificial.</td>
+                        <td><input type="radio" name="q_ai_discomfort" value="1"></td>
+                        <td><input type="radio" name="q_ai_discomfort" value="2"></td>
+                        <td><input type="radio" name="q_ai_discomfort" value="3"></td>
+                        <td><input type="radio" name="q_ai_discomfort" value="4"></td>
+                        <td><input type="radio" name="q_ai_discomfort" value="5"></td>
+                    </tr>
+                    <tr>
+                        <td class="likert-row-label">A inteligência artificial pode vir a assumir o controle das pessoas.</td>
+                        <td><input type="radio" name="q_ai_control" value="1"></td>
+                        <td><input type="radio" name="q_ai_control" value="2"></td>
+                        <td><input type="radio" name="q_ai_control" value="3"></td>
+                        <td><input type="radio" name="q_ai_control" value="4"></td>
+                        <td><input type="radio" name="q_ai_control" value="5"></td>
+                    </tr>
+                    <tr>
+                        <td class="likert-row-label">Sistemas de inteligência artificial deveriam ser usados apenas para assuntos sem importância.</td>
+                        <td><input type="radio" name="q_ai_trivial" value="1"></td>
+                        <td><input type="radio" name="q_ai_trivial" value="2"></td>
+                        <td><input type="radio" name="q_ai_trivial" value="3"></td>
+                        <td><input type="radio" name="q_ai_trivial" value="4"></td>
+                        <td><input type="radio" name="q_ai_trivial" value="5"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="survey-page" id="page-8" style="display:none;">
+			<h2>Informações Importantes</h2>
+			<p>
+				As próximas perguntas têm como objetivo compreender padrões de comportamento político.
+				Suas respostas são totalmente anônimas.
+			</p>
+		</div>
+
+        <div class="survey-page" id="page-9" style="display: none;">
+			<p>Na eleição de 2022 para presidente, você:</p>
+			<div>
+				<input name="question2" type="radio" value="votou_1e2"/> Votou no 1º e no 2º turno<br/>
+				<input name="question2" type="radio" value="votou_1"/> Votou somente no 1º turno<br/>
+				<input name="question2" type="radio" value="votou_2"/> Votou somente no 2º turno<br/>
+				<input name="question2" type="radio" value="nao_votou"/> Não votou em nenhum turno<br/>
+				<input name="question2" type="radio" value="nao_podia_votar"/> Não podia votar na época<br/>
+			</div>
+            <div id="q3-container" style="margin-top:20px; display:none;">
+                <p>Em quem você votou para presidente no segundo turno da eleição de 2022?</p>
+                <div>
+                    <input name="question3" type="radio" value="lula"/> Lula (PT)<br/>
+                    <input name="question3" type="radio" value="bolsonaro"/> Bolsonaro (PL)<br/>
+                    <input name="question3" type="radio" value="branco_nulo"/> Branco / nulo<br/>
+                </div>
+            </div>
+		</div>
+
+        <div class="survey-page" id="page-10" style="display: none;">
+			<p>Escala 1 (Esquerda) a 10 (Direita). Onde você se encaixa?</p>
+			<div class="scale-options">
+                <label><input type="radio" name="question4" value="1">1</label>
+                <label><input type="radio" name="question4" value="2">2</label>
+                <label><input type="radio" name="question4" value="3">3</label>
+                <label><input type="radio" name="question4" value="4">4</label>
+                <label><input type="radio" name="question4" value="5">5</label>
+                <label><input type="radio" name="question4" value="6">6</label>
+                <label><input type="radio" name="question4" value="7">7</label>
+                <label><input type="radio" name="question4" value="8">8</label>
+                <label><input type="radio" name="question4" value="9">9</label>
+                <label><input type="radio" name="question4" value="10">10</label>
+            </div>
+            <br>
+            <p>Frequência de uso de fontes de informação:</p>
+            <table style="width:100%; font-size:14px;">
+                <tr><th>Fonte</th><th>Dia</th><th>Sem</th><th>Mês</th><th>Raro</th><th>Nunca</th></tr>
+                <tr><td>Jornal diário</td><td><input type="radio" name="q5_jornal_diario" value="dia"></td><td><input type="radio" name="q5_jornal_diario" value="sem"></td><td><input type="radio" name="q5_jornal_diario" value="mes"></td><td><input type="radio" name="q5_jornal_diario" value="raro"></td><td><input type="radio" name="q5_jornal_diario" value="nunca"></td></tr>
+                <tr><td>TV</td><td><input type="radio" name="q5_jornais_tv" value="dia"></td><td><input type="radio" name="q5_jornais_tv" value="sem"></td><td><input type="radio" name="q5_jornais_tv" value="mes"></td><td><input type="radio" name="q5_jornais_tv" value="raro"></td><td><input type="radio" name="q5_jornais_tv" value="nunca"></td></tr>
+                <tr><td>Rádio</td><td><input type="radio" name="q5_jornais_radio" value="dia"></td><td><input type="radio" name="q5_jornais_radio" value="sem"></td><td><input type="radio" name="q5_jornais_radio" value="mes"></td><td><input type="radio" name="q5_jornais_radio" value="raro"></td><td><input type="radio" name="q5_jornais_radio" value="nunca"></td></tr>
+                <tr><td>Redes sociais</td><td><input type="radio" name="q5_redes_sociais" value="dia"></td><td><input type="radio" name="q5_redes_sociais" value="sem"></td><td><input type="radio" name="q5_redes_sociais" value="mes"></td><td><input type="radio" name="q5_redes_sociais" value="raro"></td><td><input type="radio" name="q5_redes_sociais" value="nunca"></td></tr>
+                <tr><td>Conversas</td><td><input type="radio" name="q5_conversas" value="dia"></td><td><input type="radio" name="q5_conversas" value="sem"></td><td><input type="radio" name="q5_conversas" value="mes"></td><td><input type="radio" name="q5_conversas" value="raro"></td><td><input type="radio" name="q5_conversas" value="nunca"></td></tr>
+                <tr><td>IA (ChatGPT)</td><td><input type="radio" name="q5_ia" value="dia"></td><td><input type="radio" name="q5_ia" value="sem"></td><td><input type="radio" name="q5_ia" value="mes"></td><td><input type="radio" name="q5_ia" value="raro"></td><td><input type="radio" name="q5_ia" value="nunca"></td></tr>
+            </table>
+		</div>
+
+        <div class="survey-page" id="page-11" style="display: none;">
+			<p>Quem julga se uma lei é constitucional?</p>
+			<div>
+				<input name="question6" type="radio" value="camara"/> Câmara<br/>
+				<input name="question6" type="radio" value="senado"/> Senado<br/>
+				<input name="question6" type="radio" value="stf"/> STF<br/>
+				<input name="question6" type="radio" value="presidencia"/> Presidência<br/>
+                <input name="question6" type="radio" value="nao_sei"/> Não sei<br/>
+			</div>
+            <br>
+            <p>Frequência eleições gerais?</p>
+            <div>
+				<input name="question7" type="radio" value="2anos"/> 2 anos<br/>
+				<input name="question7" type="radio" value="4anos"/> 4 anos<br/>
+				<input name="question7" type="radio" value="5anos"/> 5 anos<br/>
+                <input name="question7" type="radio" value="nao_sei"/> Não sei<br/>
+			</div>
+            <br>
+            <p>Cargo Hugo Motta?</p>
+            <div>
+				<input name="question9" type="radio" value="presidente_camara"/> Pres. Câmara<br/>
+				<input name="question9" type="radio" value="presidente_senado"/> Pres. Senado<br/>
+				<input name="question9" type="radio" value="ministro_stf"/> Ministro STF<br/>
+                <input name="question9" type="radio" value="nao_sei"/> Não sei<br/>
+			</div>
+		</div>
+
+		<div class="survey-page" id="page-12" style="display: none;">
+			<p>Para demonstrar que você está lendo com atenção, selecione "Julgar crimes" abaixo.</p>
+			<div>
+				<input name="question8" type="radio" value="criar_revisar_leis"/> Criar leis<br/>
+				<input name="question8" type="radio" value="julgar_crimes"/> Julgar crimes<br/>
+				<input name="question8" type="radio" value="sentencas_constitucionais"/> Definir sentenças<br/>
+			</div>
+		</div>
+
 		<div id="navigation-buttons" style="margin-top: 20px;">
-			<button id="back-button" onclick="navigatePage(-1)" style="padding: 10px 20px; font-size: 16px; display: none;">
-				Voltar
-			</button>
-			<button id="next-button" onclick="navigatePage(1)" style="padding: 10px 20px; font-size: 16px;">
-				Avançar
-			</button>
+            <div id="loading-spinner" style="display:none; color:blue;">Aguarde...</div>
+			<button id="next-button" onclick="handleNextButton()" style="padding: 10px 20px; font-size: 16px;">Avançar</button>
 		</div>
 	</div>
+
+    <div id="description" style="text-align: center; margin-bottom: 20px; display: none;">
+        <p style="font-size: 18px; color: #555;"><b>Primeiro, por favor responda.</b></p>
+    </div>
+
+    <div id="question-box" style="display: none; text-align: center; margin-top: 20px; margin-bottom: 30px;">
+        <p id="final-question" style="font-weight:bold;">Qual sua opinião sobre a proposta acima?</p>
+        <div id="ai-scale" style="display: flex; justify-content: center; gap: 24px; margin-bottom: 16px; flex-wrap: wrap;">
+            <label><input type="radio" name="ai_vote" value="discordo_fortemente"> Discordo fortemente</label>
+            <label><input type="radio" name="ai_vote" value="discordo"> Discordo</label>
+            <label><input type="radio" name="ai_vote" value="neutro"> Neutro</label>
+            <label><input type="radio" name="ai_vote" value="concordo"> Concordo</label>
+            <label><input type="radio" name="ai_vote" value="concordo_fortemente"> Concordo fortemente</label>
+        </div>
+        <button id="submit-vote-btn" style="padding: 10px 20px;">Enviar resposta</button>
+        <p id="vote-message" style="color: green; display: none;"></p>
+    </div>
+
+    <div id="timer" style="display: none;"><span style="color: red;">3:00</span></div>
+    <div id="chatbox" style="display: none;"></div>
+    <input id="user-input" placeholder="Digite sua mensagem..." style="display: none;" type="text"/>
+
+    <div id="final-consultation-page" style="display: none; max-width: 800px; margin: 0 auto;">
+        <div style="background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+            <h2 style="color: #28a745; text-align: center;">A pesquisa foi concluída.</h2>
+            
+            <p style="font-size: 16px; line-height: 1.5; color: #555;">
+                Abaixo disponibilizamos links para consultas públicas atualmente abertas no site oficial do Congresso Nacional.
+                <br><br>
+                Consulta pública é um mecanismo institucional por meio do qual cidadãos podem registrar sua posição (por exemplo, concordar ou discordar) sobre propostas legislativas em tramitação.
+                <br><br>
+                O acesso é opcional e não está vinculado à pesquisa. Ao clicar, você será redirecionado ao site oficial do Congresso Nacional (em uma nova aba).
+            </p>
+
+            <a href="https://www12.senado.leg.br/ecidadania/visualizacaomateria?id=160575" target="_blank" class="consultation-box" onclick="trackLinkClick('ANISTIA_8_JAN')">
+                <span class="consultation-title">CONSULTA PÚBLICA ANISTIA 8 DE JANEIRO</span>
+                <span class="consultation-url">Clique para acessar o site do Senado</span>
+            </a>
+
+            <a href="https://www12.senado.leg.br/ecidadania/visualizacaomateria?id=168114" target="_blank" class="consultation-box" onclick="trackLinkClick('SEGURANCA_PUBLICA')">
+                <span class="consultation-title">CONSULTA PÚBLICA AUMENTO DOS RECURSOS DE SEGURANÇA PÚBLICA</span>
+                <span class="consultation-url">Clique para acessar o site do Senado</span>
+            </a>
+
+            <a href="https://www12.senado.leg.br/ecidadania/visualizacaomateria?id=149579" target="_blank" class="consultation-box" onclick="trackLinkClick('GRANDES_FORTUNAS')">
+                <span class="consultation-title">CONSULTA PÚBLICA TAXAÇÃO DE GRANDES FORTUNAS</span>
+                <span class="consultation-url">Clique para acessar o site do Senado</span>
+            </a>
+
+            <hr style="margin: 30px 0; border: 0; border-top: 1px solid #eee;">
+
+            <div style="text-align: center;">
+                <p style="font-size: 14px; color: #777; margin-bottom: 15px;">
+                    Para registrar sua participação e receber seus créditos, clique no botão abaixo:
+                </p>
+                <button onclick="redirectUser('COMPLETE')" style="background-color: #28a745; color: white; border: none; padding: 15px 30px; font-size: 18px; border-radius: 5px; cursor: pointer;">
+                    Finalizar e Encerrar Pesquisa
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div id="disqualification-section" style="display: none; text-align: center; margin-top: 100px;">
+    <p>Redirecionando...</p>
 </div>
 
 <script>
-	// MODELO DE IA (sempre GPT aqui, mas mantido para extensões futuras)
-	const questionAIModel = {
-		0: "gpt",
-		1: "gpt",
-		2: "gpt"
-	};
-
-	// Categorias do experimento de IA (propostas)
-	const categories = [
-		{
-			name: "Anistia",
-			questions: [
-				"Pessoas condenadas pelos ataques de 8 de janeiro de 2023 deveriam ser presas.",
-				"O governo deveria conceder anistia às pessoas envolvidas nos protestos de 8 de janeiro de 2023."
-			],
-			expert: [
-				"política criminal e ataques de 8 de janeiro de 2023",
-				"anistia, direito penal e ataques de 8 de janeiro de 2023"
-			],
-			default: [
-				"Esta proposta envolve punir de forma rigorosa pessoas condenadas pelos ataques de 8 de janeiro de 2023.\n\nEntre os argumentos a favor, defensores ressaltam que as prisões seriam importantes para responsabilizar quem participou de atos antidemocráticos, desestimular futuras tentativas semelhantes e reforçar o respeito ao Estado de Direito. Entre os argumentos contrários, críticos afirmam que penas muito duras podem ser vistas como excessivas ou politizadas, e que alguns envolvidos tiveram participação menos direta, o que exigiria respostas diferenciadas, como penas alternativas ou acordos. Em última instância, a decisão envolve equilibrar justiça, proporcionalidade das penas e estabilidade política.",
-				"Esta proposta trata da possibilidade de conceder anistia às pessoas envolvidas nos eventos de 8 de janeiro de 2023.\n\nEntre os argumentos a favor, apoiadores afirmam que a anistia poderia ajudar a reduzir tensões políticas, favorecer a reconciliação nacional e encerrar um ciclo de conflitos em torno desses acontecimentos. Já entre os argumentos contrários, críticos dizem que anistiar envolvidos em ataques a instituições democráticas pode passar a mensagem de impunidade, enfraquecer o Estado de Direito e estimular novas ações semelhantes no futuro. A questão central é como equilibrar reconciliação política e responsabilidade jurídica pelos atos praticados."
-			]
-		},
-		{
-			name: "Segurança pública",
-			questions: [
-				"Operações policiais e militares em favelas e áreas pobres deveriam ser suspensas.",
-				"O governo deveria aumentar os investimentos em policiamento nas ruas."
-			],
-			expert: [
-				"segurança pública, operações policiais em favelas e direitos humanos",
-				"policiamento ostensivo, segurança pública e políticas de prevenção ao crime"
-			],
-			default: [
-				"Suspender operações policiais e militares em favelas e áreas pobres pode ser visto como uma forma de proteger moradores inocentes de abusos, confrontos armados e violações de direitos humanos. Essas operações muitas vezes resultam em mortes de pessoas que não têm ligação direta com o crime organizado e geram medo permanente nas comunidades. Além disso, estudos e relatos indicam que ações pontuais e violentas nem sempre reduzem o crime de forma sustentável. Uma política mais eficaz poderia priorizar inteligência policial, investigação, políticas sociais e melhoria de serviços públicos, em vez de incursões armadas frequentes.",
-				"Aumentar investimentos em policiamento nas ruas pode ser defendido como uma forma direta de reduzir a criminalidade e aumentar a sensação de segurança da população. A presença visível de policiais em áreas públicas pode inibir delitos, facilitar respostas rápidas a ocorrências e reforçar a confiança das pessoas nas instituições de segurança. No entanto, esse tipo de política também precisa ser acompanhado de fiscalização, treinamento adequado e respeito aos direitos humanos para evitar abusos e abordagens discriminatórias, além de ser complementado por políticas sociais de longo prazo."
-			]
-		},
-		{
-			name: "Economia",
-			questions: [
-				"O Brasil deveria aumentar impostos sobre grandes fortunas e super-ricos.",
-				"O modelo de jornada 6x1 (seis dias de trabalho e um dia de descanso) deveria continuar sendo permitido pela legislação trabalhista brasileira.",
-				"A faixa de isenção do Imposto de Renda deveria incluir pessoas que ganham até R$ 5.000 por mês."
-			],
-			expert: [
-				"tributação sobre grandes fortunas, desigualdade e política fiscal",
-				"legislação trabalhista brasileira e jornada de trabalho 6x1",
-				"Imposto de Renda, política tributária e renda das famílias"
-			],
-			default: [
-				"Aumentar impostos sobre grandes fortunas e super-ricos é defendido por quem vê essa medida como uma forma de reduzir a desigualdade social, aumentar a arrecadação do Estado e financiar políticas públicas em áreas como saúde, educação e assistência social. Esses defensores argumentam que pessoas com patrimônio muito elevado podem contribuir mais sem comprometer seu padrão de vida. Por outro lado, críticos afirmam que impostos mais altos sobre grandes fortunas poderiam desestimular investimentos, levar parte do capital para outros países e gerar efeitos negativos sobre o crescimento econômico. O debate envolve equilibrar justiça distributiva e impactos sobre investimento e atividade econômica.",
-				"Manter o modelo de jornada 6x1, em que a pessoa trabalha seis dias e descansa um, é visto por alguns como compatível com setores que funcionam continuamente, como comércio, serviços e indústria, desde que haja pagamento adequado de horas extras e respeito aos limites legais. Defensores argumentam que esse modelo oferece flexibilidade para empresas e trabalhadores. Críticos, contudo, apontam que jornadas muito longas podem prejudicar a saúde física e mental, aumentar o risco de acidentes de trabalho e reduzir a qualidade de vida, defendendo alternativas com maior equilíbrio entre trabalho e descanso.",
-				"Ampliar a faixa de isenção do Imposto de Renda para incluir pessoas que ganham até R$ 5.000 por mês é defendido como uma forma de aliviar o peso dos tributos sobre a classe média e os trabalhadores formais, aumentando a renda disponível para consumo e pagamento de despesas básicas. Isso poderia ajudar famílias endividadas e estimular a economia interna. Por outro lado, a ampliação da isenção reduz a arrecadação do governo federal, o que pode exigir compensações, como cortes de gastos, criação de outros tributos ou aumento de alíquotas em faixas mais altas. A discussão envolve priorizar alívio tributário para quem ganha menos versus a necessidade de financiar políticas públicas."
-			]
-		}
-	];
-
-	let conversationHistory = [];
-	let prolificPID = '';
-
-	// Modos de IA – 1 = sem IA, 2 = IA "crua", 3 = neutra, 4 = opinativa
-	let IA_MODE = null;
-
-	let showingInfoQ2 = false;
-
-	// Controle de timer (interval + callback pendente)
-	let timerInterval = null;
-	let pendingTimerCallback = null;
-
-	function hashStringToInt(str) {
-		let hash = 0;
-		for (let i = 0; i < str.length; i++) {
-			hash = ((hash << 5) - hash) + str.charCodeAt(i);
-			hash |= 0;
-		}
-		return hash;
-	}
-
-	function assignIAModeForParticipant() {
-		const modes = [1, 2, 3, 4];
-		const base = prolificPID || generateRandomHashKey();
-		const h = Math.abs(hashStringToInt(base));
-		IA_MODE = modes[h % modes.length];
-		console.log("Assigned IA_MODE:", IA_MODE);
-	}
-
-	// Estado global
-	let currentCategoryIndex = 0;
-	let currentQuestionIndex = -1;
-	let currentQuestion = null;
-	let showChatbox = false;
-	const chatbox = document.getElementById('chatbox');
-	const userInput = document.getElementById('user-input');
-
-	let currentPage = 1;
-	const totalPages = 16;
-	let experimentCompleted = false;
-
-	function navigatePage(step) {
-		console.log(currentPage);
-
-		const infoDiv = document.getElementById('question-1b');
-		const q1Div = document.getElementById('question-1');
-
-		// Se estamos na página 1b (texto informativo) e o usuário navega
-		if (showingInfoQ2) {
-			if (step < 0) {
-				// Volta para Q1
-				if (infoDiv) infoDiv.style.display = "none";
-				if (q1Div) q1Div.style.display = "block";
-				showingInfoQ2 = false;
-				updateNavigationButtons();
-				return;
-			}
-			if (step > 0) {
-				// Vai para Q2
-				if (infoDiv) infoDiv.style.display = "none";
-				showingInfoQ2 = false;
-				currentPage = 2;
-				const q2Div = document.getElementById('question-2');
-				if (q2Div) q2Div.style.display = "block";
-				updateNavigationButtons();
-				return;
-			}
-		}
-
-		// Entrada na página de informação logo após Q1
-		if (!showingInfoQ2 && step > 0 && currentPage === 1) {
-			if (!checkAnswers()) return;
-			if (q1Div) q1Div.style.display = "none";
-			if (infoDiv) infoDiv.style.display = "block";
-			showingInfoQ2 = true;
-			updateNavigationButtons();
-			return;
-		}
-
-		// Demais páginas: se for avançar, checa respostas
-		if (step > 0) {
-			if (!checkAnswers()) return;
-		}
-
-		// Depois da Q9, ir para experimento de IA (se ainda não feito)
-		if (step > 0 && currentPage === 9 && !experimentCompleted) {
-			const currentDiv = document.getElementById(`question-${currentPage}`);
-			if (currentDiv) currentDiv.style.display = "none";
-
-			const surveyContainer = document.getElementsByClassName('survey-container')[0];
-			if (surveyContainer) surveyContainer.style.display = "none";
-
-			const surveyQuestions = document.getElementById('survey-questions');
-			if (surveyQuestions) surveyQuestions.style.display = "none";
-
-			const instructionsDiv = document.getElementById('instructions');
-			if (instructionsDiv) instructionsDiv.style.display = "block";
-
-			return;
-		}
-
-		// Depois da última página demográfica, finaliza
-		if (step > 0 && experimentCompleted && currentPage === totalPages) {
-			showCompletionMessage();
-			return;
-		}
-
-		const currentDiv2 = document.getElementById(`question-${currentPage}`);
-		if (currentDiv2) currentDiv2.style.display = "none";
-
-		currentPage += step;
-		if (currentPage < 1) currentPage = 1;
-
-		// Pular pergunta sobre candidato (Q3) se a pessoa não votou ou não podia votar (Q2)
-		const q2Val = document.querySelector('input[name="question2"]:checked')?.value;
-		if (q2Val === 'nao_votou' || q2Val === 'nao_podia_votar') {
-			// indo pra frente, não mostrar Q3
-			if (currentPage === 3 && step > 0) {
-				currentPage = 4;
-			}
-			// voltando, não mostrar Q3
-			if (currentPage === 3 && step < 0) {
-				currentPage = 2;
-			}
-		}
-
-		if (currentPage <= totalPages) {
-			const nextDiv = document.getElementById(`question-${currentPage}`);
-			if (nextDiv) nextDiv.style.display = "block";
-		}
-
-		updateNavigationButtons();
-	}
-
-	function updateNavigationButtons() {
-		const backButton = document.getElementById('back-button');
-		backButton.style.display = currentPage > 1 ? "inline-block" : "none";
-
-		const nextButton = document.getElementById('next-button');
-		nextButton.textContent = currentPage === totalPages ? "Enviar resposta" : "Avançar";
-	}
-
-	function start() {
-		document.getElementById('instructions').style.display = "none";
-		document.getElementById('description').style.display = "block";
-		startChat();
-	}
-
-	function acceptConsent() {
-		const consentDiv = document.getElementById('consent-section');
-		if (consentDiv) consentDiv.style.display = "none";
-
-		const instrDiv = document.getElementById('instructions');
-		if (instrDiv) instrDiv.style.display = "none";
-
-		const descDiv = document.getElementById('description');
-		if (descDiv) descDiv.style.display = "none";
-
-		const surveyContainer = document.getElementsByClassName('survey-container')[0];
-		if (surveyContainer) surveyContainer.style.display = "block";
-
-		const surveyQuestions = document.getElementById('survey-questions');
-		if (surveyQuestions) surveyQuestions.style.display = "block";
-
-		for (let i = 1; i <= totalPages; i++) {
-			const page = document.getElementById(`question-${i}`);
-			if (page) page.style.display = "none";
-		}
-		currentPage = 1;
-		const firstPage = document.getElementById('question-1');
-		if (firstPage) firstPage.style.display = "block";
-
-		updateNavigationButtons();
-	}
-
-	function declineConsent() {
-		document.getElementById('consent-section').innerHTML = `
-			<p style="font-size: 20px; color: red; font-weight: bold; margin-top: 50px;">
-				Obrigada pelo seu tempo. Você optou por não participar da pesquisa.
-			</p>`;
-	}
-
-	// Seleciona pergunta + configuração do chatbot para a rodada corrente
-	function selectQuestionAndChatbox() {
-		console.log("Categoria atual:", currentCategoryIndex);
-
-		const category = categories[currentCategoryIndex];
-		currentQuestionIndex = Math.floor(Math.random() * category.questions.length);
-		currentQuestion = category.questions[currentQuestionIndex];
-
-		if (IA_MODE === 1) {
-			// Sem IA
-			showChatbox = false;
-			conversationHistory = [];
-		} else if (IA_MODE === 2) {
-			// IA "crua"
-			showChatbox = true;
-			conversationHistory = [];
-		} else if (IA_MODE === 3) {
-			// IA neutra
-			showChatbox = true;
-			conversationHistory = [
-				{
-					role: "system",
-					content: "Você é um assistente neutro e balanceado. Nunca dá opinião própria. Sempre apresenta prós e contras. Não usa 'eu acho'. Responde em português do Brasil."
-				}
-			];
-		} else if (IA_MODE === 4) {
-			// IA opinativa
-			showChatbox = true;
-			conversationHistory = [
-				{
-					role: "system",
-					content: "Você é um assistente opinativo. Escolha um lado e defenda-o de forma clara. Pode usar 'eu' e linguagem de opinião. Responde em português do Brasil."
-				}
-			];
-		} else {
-			showChatbox = false;
-			conversationHistory = [];
-		}
-
-		if (showChatbox) {
-			conversationHistory.push({
-				role: "system",
-				content: `A proposta que o usuário está avaliando é: "${currentQuestion}". Responda de forma consistente com as instruções anteriores.`
-			});
-		}
-	}
-
-	// categorias de resposta só aparecem após 3 minutos em TODOS os modos (com IA e sem IA)
-	function displayQuestion() {
-		const description = document.getElementById('description');
-		const timer = document.getElementById('timer');
-		const questionBox = document.getElementById('question-box');
-		const finalQuestion = document.getElementById('final-question');
-		const submitBtn = document.getElementById('submit-vote-btn');
-		const voteMessage = document.getElementById('vote-message');
-		const radios = document.querySelectorAll('input[name="ai_vote"]');
-
-		// Garante que qualquer timer anterior seja cancelado antes de começar um novo
-		clearTimer();
-
-		description.style.display = "block";
-		description.innerHTML = `<p style="font-size: 18px; color: #555; line-height: 1.5;">
-			<strong>Proposta:</strong> ${currentQuestion}<br>
-			${showChatbox ? "" : "<br>Você poderá registrar sua resposta assim que o cronômetro terminar."}
-		</p>`;
-
-		if (finalQuestion) {
-			finalQuestion.textContent = "Pensando nessa proposta, qual é o seu grau de concordância?";
-		}
-
-		radios.forEach(r => { r.checked = false; r.disabled = true; });
-		if (voteMessage) {
-			voteMessage.style.display = "none";
-			voteMessage.textContent = "";
-		}
-
-		const attachSubmitHandler = () => {
-			if (!submitBtn) return;
-			submitBtn.onclick = () => {
-				const selected = document.querySelector('input[name="ai_vote"]:checked');
-				if (!selected) {
-					alert("Por favor, selecione uma opção antes de enviar.");
-					return;
-				}
-				submitVote(selected.value);
-			};
-		};
-
-		timing('start');
-
-		if (showChatbox) {
-			// MODO COM IA: mostra chat + cronômetro, respostas só depois de 3 minutos
-			resetChatbox();
-			chatbox.style.display = "block";
-			userInput.style.display = "block";
-			timer.style.display = "block";
-
-			questionBox.style.display = "none";
-			if (submitBtn) submitBtn.disabled = true;
-
-			attachSubmitHandler();
-			sendMessage_initial();
-
-			startTimer(() => {
-				questionBox.style.display = "block";
-				radios.forEach(r => { r.disabled = false; });
-				if (submitBtn) submitBtn.disabled = false;
-			});
-		} else {
-			// MODO SEM IA: só cronômetro, respostas depois de 3 minutos
-			chatbox.style.display = "none";
-			userInput.style.display = "none";
-			timer.style.display = "block";
-
-			questionBox.style.display = "none";
-			if (submitBtn) submitBtn.disabled = true;
-
-			attachSubmitHandler();
-
-			startTimer(() => {
-				questionBox.style.display = "block";
-				radios.forEach(r => { r.disabled = false; });
-				if (submitBtn) submitBtn.disabled = false;
-			});
-		}
-	}
-
-	function showFinalMessage() {
-		clearTimer();
-
-		const descriptionDiv = document.getElementById('description');
-		if (descriptionDiv) descriptionDiv.style.display = "none";
-
-		const chatboxDiv = document.getElementById('chatbox');
-		if (chatboxDiv) chatboxDiv.style.display = "none";
-
-		const timerDiv = document.getElementById('timer');
-		if (timerDiv) timerDiv.style.display = "none";
-
-		const userInputDiv = document.getElementById('user-input');
-		if (userInputDiv) userInputDiv.style.display = "none";
-
-		const questionBoxDiv = document.getElementById('question-box');
-		if (questionBoxDiv) questionBoxDiv.style.display = "none";
-
-		experimentCompleted = true;
-
-		const surveyContainer = document.getElementsByClassName('survey-container')[0];
-		if (surveyContainer) surveyContainer.style.display = "block";
-
-		const surveyQuestions = document.getElementById('survey-questions');
-		if (surveyQuestions) surveyQuestions.style.display = "block";
-
-		for (let i = 1; i <= totalPages; i++) {
-			const page = document.getElementById(`question-${i}`);
-			if (page) page.style.display = "none";
-		}
-
-		currentPage = 10;
-		const firstDemo = document.getElementById('question-10');
-		if (firstDemo) firstDemo.style.display = "block";
-
-		updateNavigationButtons();
-	}
-
-	function showCompletionMessage() {
-		submitSurveyAnswers_v2();
-
-		const surveyQuestions = document.getElementById('survey-questions');
-		if (surveyQuestions) surveyQuestions.style.display = "none";
-
-		const body = document.querySelector('body');
-		const finalMessage = document.createElement('div');
-		finalMessage.style.textAlign = "center";
-		finalMessage.style.marginTop = "50px";
-		finalMessage.style.fontSize = "24px";
-		finalMessage.style.color = "green";
-		finalMessage.style.fontWeight = "bold";
-		finalMessage.innerHTML = "Obrigado(a) por completar a pesquisa.<br><br>Seu código de conclusão é: <b>2025_LLM</b>";
-		body.appendChild(finalMessage);
-	}
-
-	function resetChatbox() {
-		const chatbox = document.getElementById('chatbox');
-		chatbox.innerHTML = '';
-	}
-
-	function generateRandomHashKey(length = 12) {
-		const array = new Uint8Array(length);
-		crypto.getRandomValues(array);
-		return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('').slice(0, length);
-	}
-
-	function getProlificParams() {
-		const params = new URLSearchParams(window.location.search);
-		const prolificPID = params.get('PROLIFIC_PID');
-		const studyID = params.get('STUDY_ID');
-		const sessionID = params.get('SESSION_ID');
-		return { prolificPID, studyID, sessionID };
-	}
-
-	const prolificParams = getProlificParams();
-	prolificPID = prolificParams['prolificPID'];
-	if (!prolificPID) {
-		prolificPID = generateRandomHashKey();
-		console.log('Generated Random Prolific PID:', prolificPID);
-	}
-	console.log('Retrieved Prolific PID:', prolificPID);
-
-	assignIAModeForParticipant();
-
-	// limpa timer e callback pendente
-	function clearTimer() {
-		if (timerInterval) {
-			clearInterval(timerInterval);
-			timerInterval = null;
-		}
-		pendingTimerCallback = null;
-		const timer = document.getElementById('timer');
-		if (timer) {
-			timer.innerHTML = '';
-			timer.style.display = 'none';
-		}
-	}
-
-	// timer de 3 minutos – texto muda se tem IA ou não
-	function startTimer(callback) {
-		let timeLeft = 180;
-		const timer = document.getElementById('timer');
-
-		// cancela qualquer timer anterior
-		if (timerInterval) {
-			clearInterval(timerInterval);
-			timerInterval = null;
-		}
-
-		pendingTimerCallback = callback;
-
-		const baseMsg = showChatbox
-			? 'Antes de responder, você pode <strong>conversar um pouco com o assistente</strong> sobre o tema. Isso pode ajudar você a pensar melhor antes de escolher sua resposta.<br> Tempo restante: '
-			: 'Por favor, use o tempo restante para <strong>pensar sobre este assunto</strong> antes de decidir sua resposta: ';
-
-		timer.style.display = 'block';
-		timer.innerHTML = `${baseMsg}<span style="color: red;">3:00<br><br></span>`;
-
-		timerInterval = setInterval(() => {
-			timeLeft--;
-			const minutes = Math.floor(timeLeft / 60);
-			const seconds = timeLeft % 60;
-			timer.innerHTML = `${baseMsg}<span style="color: red;">${minutes}:${seconds < 10 ? '0' : ''}${seconds}<br><br></span>`;
-			if (timeLeft <= 0) {
-				clearInterval(timerInterval);
-				timerInterval = null;
-
-				const cb = pendingTimerCallback;
-				pendingTimerCallback = null;
-				if (cb) cb();
-			}
-		}, 1000);
-	}
-
-	// FUNÇÃO ESCONDIDA: pular tempo de espera pelo console
-	// No console do navegador, chame: skipWait();
-	window.skipWait = function() {
-		console.log('skipWait() called');
-		if (timerInterval) {
-			clearInterval(timerInterval);
-			timerInterval = null;
-		}
-		const cb = pendingTimerCallback;
-		pendingTimerCallback = null;
-		if (cb) cb();
-		const timer = document.getElementById('timer');
-		if (timer) {
-			timer.innerHTML = '';
-		}
-	};
-
-	function timing(choice, retryCount = 3) {
-		const payload = {
-			question: currentQuestion,
-			prolificPID: prolificPID,
-			showChatbox: showChatbox,
-		};
-
-		function sendTiming(choice, attempt) {
-			let url;
-			if (choice == 'start') {
-				url = 'https:///llm-survey-721553078439.us-east1.run.app/start';
-			} else {
-				url = 'https:///llm-survey-721553078439.us-east1.run.app/end';
-			}
-
-			fetch(url, {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify(payload),
-			})
-				.then(response => response.json())
-				.then(data => {
-					console.log('timing submitted:', data);
-				})
-				.catch(error => {
-					console.error('Error submitting timing:', error);
-					if (attempt < retryCount) {
-						console.log(`Retrying... Attempt ${attempt + 1}`);
-						sendTiming(choice, attempt + 1);
-					}
-				});
-		}
-
-		sendTiming(choice, 0);
-	}
-
-	function submitVote(choice, retryCount = 3) {
-		const voteMessage = document.getElementById('vote-message');
-		const submitBtn = document.getElementById('submit-vote-btn');
-		const radios = document.querySelectorAll('input[name="ai_vote"]');
-
-		if (submitBtn) submitBtn.disabled = true;
-		radios.forEach(r => r.disabled = true);
-
-		const payload = {
-			category: categories[currentCategoryIndex].name,
-			question: currentQuestion,
-			vote: choice,
-			prolificPID: prolificPID,
-			showChatbox: showChatbox,
-		};
-
-		timing('end');
-
-		function sendRequest(attempt) {
-			fetch('https:///llm-survey-721553078439.us-east1.run.app/vote', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify(payload),
-			})
-				.then(response => response.json())
-				.then(data => {
-					console.log('Vote submitted:', data);
-					if (voteMessage) {
-						voteMessage.textContent = `Obrigado! Sua resposta foi registrada. Aguarde a próxima pergunta.`;
-						voteMessage.style.color = 'green';
-						voteMessage.style.display = 'block';
-					}
-					conversationHistory = [];
-
-					setTimeout(() => {
-						const qb = document.getElementById('question-box');
-						if (qb) qb.style.display = "block";
-						if (voteMessage) voteMessage.style.display = "none";
-
-						currentCategoryIndex++;
-						if (currentCategoryIndex < categories.length) {
-							selectQuestionAndChatbox();
-							displayQuestion();
-						} else {
-							showFinalMessage();
-						}
-					}, 2000);
-				})
-				.catch(error => {
-					console.error('Error submitting vote:', error);
-					if (attempt < retryCount) {
-						console.log(`Retrying... Attempt ${attempt + 1}`);
-						sendRequest(attempt + 1);
-					} else {
-						if (voteMessage) {
-							voteMessage.textContent = `Falha ao enviar sua resposta. Tente novamente.`;
-							voteMessage.style.color = 'red';
-							voteMessage.style.display = 'block';
-						}
-						if (submitBtn) submitBtn.disabled = false;
-						radios.forEach(r => r.disabled = false);
-					}
-				});
-		}
-
-		sendRequest(0);
-	}
-
-	function sendMessage_initial() {
-		const description = document.getElementById('description');
-		const userMessage = description.innerText.replace(/\s+/g, ' ').trim() +
-			" Please answer this question first with either yes or no. Then in a new line explain why you picked this answer.";
-
-		appendMessage('IA', "Olá! Você pode me fazer qualquer pergunta relacionada ao tema acima. Estou aqui para ajudar com informações e explicações sobre o assunto.", 'assistant');
-
-		const category = categories[currentCategoryIndex];
-		const aiMessage = category.default[currentQuestionIndex];
-
-		conversationHistory.push({ "role": "user", "content": userMessage });
-		conversationHistory.push({ "role": 'assistant', "content": aiMessage });
-	}
-
-	function sendMessage() {
-		const userMessage = userInput.value.trim();
-		if (!userMessage) return;
-
-		const originalPlaceholder = userInput.placeholder;
-		userInput.placeholder = "Por favor, aguarde enquanto geramos a resposta...";
-		userInput.value = '';
-		userInput.disabled = true;
-
-		let dotCount = 0;
-		const loadingInterval = setInterval(() => {
-			dotCount = (dotCount + 1) % 4;
-			userInput.placeholder = "Por favor, aguarde enquanto geramos a resposta " + ".".repeat(dotCount);
-		}, 500);
-
-		appendMessage('You', userMessage, 'user');
-		conversationHistory.push({ role: 'user', content: userMessage });
-
-		const aiModel = questionAIModel[currentCategoryIndex];
-		console.log("model: " + aiModel);
-
-		fetch('https:///llm-survey-721553078439.us-east1.run.app/chat', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ history: conversationHistory, model: aiModel, prolificPID: prolificPID, question: currentQuestion })
-		})
-			.then(response => response.json())
-			.then(data => {
-				const aiMessage = data.response;
-				appendMessage('AI', data.response, 'assistant');
-				conversationHistory.push({ role: 'assistant', content: aiMessage });
-
-				clearInterval(loadingInterval);
-				userInput.placeholder = originalPlaceholder;
-				userInput.disabled = false;
-				userInput.focus();
-			})
-			.catch(error => {
-				console.error('Error:', error);
-				appendMessage('IA', 'Desculpe, algo deu errado. ' + error, 'assistant');
-
-				clearInterval(loadingInterval);
-				userInput.placeholder = originalPlaceholder;
-				userInput.disabled = false;
-				userInput.focus();
-			});
-	}
-
-	function appendMessage(sender, message, type) {
-		const messageDiv = document.createElement('div');
-		messageDiv.className = `message ${type}`;
-		messageDiv.innerHTML = `<strong>${sender}:</strong> ${message}`;
-		chatbox.appendChild(messageDiv);
-		chatbox.scrollTop = chatbox.scrollHeight;
-	}
-
-	function endChat() {
-		userInput.disabled = true;
-		document.getElementById('question-box').style.display = 'block';
-	}
-
-	userInput.addEventListener('keydown', (event) => {
-		if (event.key === 'Enter') {
-			sendMessage();
-		}
-	});
-
-	function checkAnswers() {
-		const q1 = document.querySelector('input[name="question1"]:checked')?.value;
-		const q2 = document.querySelector('input[name="question2"]:checked')?.value;
-		const q3 = document.querySelector('input[name="question3"]:checked')?.value;
-		const q4 = document.querySelector('input[name="question4"]:checked')?.value;
-
-		const q5_jornal_diario = document.querySelector('input[name="q5_jornal_diario"]:checked')?.value;
-		const q5_jornais_tv = document.querySelector('input[name="q5_jornais_tv"]:checked')?.value;
-		const q5_jornais_radio = document.querySelector('input[name="q5_jornais_radio"]:checked')?.value;
-		const q5_celular = document.querySelector('input[name="q5_celular"]:checked')?.value;
-		const q5_email = document.querySelector('input[name="q5_email"]:checked')?.value;
-		const q5_internet = document.querySelector('input[name="q5_internet"]:checked')?.value;
-		const q5_redes_sociais = document.querySelector('input[name="q5_redes_sociais"]:checked')?.value;
-		const q5_conversas = document.querySelector('input[name="q5_conversas"]:checked')?.value;
-		const q5_ia = document.querySelector('input[name="q5_ia"]:checked')?.value;
-
-		const q6 = document.querySelector('input[name="question6"]:checked')?.value;
-		const q7 = document.querySelector('input[name="question7"]:checked')?.value;
-		const q8 = document.querySelector('input[name="question8"]:checked')?.value;
-		const q9 = document.querySelector('input[name="question9"]:checked')?.value;
-
-		const d_regiao = document.querySelector('input[name="demo_regiao"]:checked')?.value;
-		const d_cor = document.querySelector('input[name="demo_cor"]:checked')?.value;
-		const d_genero = document.querySelector('input[name="demo_genero"]:checked')?.value;
-		const d_faixa = document.querySelector('input[name="demo_faixa_etaria"]:checked')?.value;
-		const d_renda = document.querySelector('input[name="demo_renda"]:checked')?.value;
-		const d_religiao = document.querySelector('input[name="demo_religiao"]:checked')?.value;
-		const d_escolaridade = document.querySelector('input[name="demo_escolaridade"]:checked')?.value;
-
-		if (currentPage === 1) {
-			if (!q1) {
-				alert("Por favor, selecione uma opção para esta pergunta.");
-				return false;
-			}
-			if (q1 === "br_under18" || q1 === "not_brazilian") {
-				alert("Obrigada! Neste momento, você não atende aos critérios de participação.");
-				return false;
-			}
-		}
-
-		if (currentPage === 2 && !q2) {
-			alert("Por favor, responda à pergunta acima.");
-			return false;
-		}
-		if (currentPage === 3 && !q3) {
-			alert("Por favor, responda à pergunta acima.");
-			return false;
-		}
-		if (currentPage === 4 && !q4) {
-			alert("Por favor, responda à pergunta acima.");
-			return false;
-		}
-
-		if (currentPage === 5) {
-			if (!q5_jornal_diario || !q5_jornais_tv || !q5_jornais_radio || !q5_celular ||
-				!q5_email || !q5_internet || !q5_redes_sociais || !q5_conversas || !q5_ia) {
-				alert("Por favor, responda a todas as linhas da tabela acima.");
-				return false;
-			}
-		}
-
-		if (currentPage === 6 && !q6) {
-			alert("Por favor, responda à pergunta acima.");
-			return false;
-		}
-		if (currentPage === 7 && !q7) {
-			alert("Por favor, responda à pergunta acima.");
-			return false;
-		}
-		if (currentPage === 8 && !q8) {
-			alert("Por favor, responda à pergunta acima.");
-			return false;
-		}
-		if (currentPage === 9 && !q9) {
-			alert("Por favor, responda à pergunta acima.");
-			return false;
-		}
-
-		if (currentPage === 10 && !d_regiao) {
-			alert("Por favor, responda à pergunta acima.");
-			return false;
-		}
-		if (currentPage === 11 && !d_cor) {
-			alert("Por favor, responda à pergunta acima.");
-			return false;
-		}
-		if (currentPage === 12 && !d_genero) {
-			alert("Por favor, responda à pergunta acima.");
-			return false;
-		}
-		if (currentPage === 13 && !d_faixa) {
-			alert("Por favor, responda à pergunta acima.");
-			return false;
-		}
-		if (currentPage === 14 && !d_renda) {
-			alert("Por favor, responda à pergunta acima.");
-			return false;
-		}
-		if (currentPage === 15 && !d_religiao) {
-			alert("Por favor, responda à pergunta acima.");
-			return false;
-		}
-		if (currentPage === 16 && !d_escolaridade) {
-			alert("Por favor, responda à pergunta acima.");
-			return false;
-		}
-
-		return true;
-	}
-
-	function buildSurveyPayload() {
-		const question1 = document.querySelector('input[name="question1"]:checked')?.value || null;
-		const question2 = document.querySelector('input[name="question2"]:checked')?.value || null;
-		const question3 = document.querySelector('input[name="question3"]:checked')?.value || null;
-		const question4 = document.querySelector('input[name="question4"]:checked')?.value || null;
-
-		const question5 = {
-			q5_jornal_diario: document.querySelector('input[name="q5_jornal_diario"]:checked')?.value || null,
-			q5_jornais_tv: document.querySelector('input[name="q5_jornais_tv"]:checked')?.value || null,
-			q5_jornais_radio: document.querySelector('input[name="q5_jornais_radio"]:checked')?.value || null,
-			q5_celular: document.querySelector('input[name="q5_celular"]:checked')?.value || null,
-			q5_email: document.querySelector('input[name="q5_email"]:checked')?.value || null,
-			q5_internet: document.querySelector('input[name="q5_internet"]:checked')?.value || null,
-			q5_redes_sociais: document.querySelector('input[name="q5_redes_sociais"]:checked')?.value || null,
-			q5_conversas: document.querySelector('input[name="q5_conversas"]:checked')?.value || null,
-			q5_ia: document.querySelector('input[name="q5_ia"]:checked')?.value || null
-		};
-
-		const question6 = document.querySelector('input[name="question6"]:checked')?.value || null;
-		const question7 = document.querySelector('input[name="question7"]:checked')?.value || null;
-		const question8 = document.querySelector('input[name="question8"]:checked')?.value || null;
-		const question9 = document.querySelector('input[name="question9"]:checked')?.value || null;
-
-		const demografia = {
-			regiao: document.querySelector('input[name="demo_regiao"]:checked')?.value || null,
-			cor: document.querySelector('input[name="demo_cor"]:checked')?.value || null,
-			genero: document.querySelector('input[name="demo_genero"]:checked')?.value || null,
-			faixa_etaria: document.querySelector('input[name="demo_faixa_etaria"]:checked')?.value || null,
-			renda: document.querySelector('input[name="demo_renda"]:checked')?.value || null,
-			religiao: document.querySelector('input[name="demo_religiao"]:checked')?.value || null,
-			escolaridade: document.querySelector('input[name="demo_escolaridade"]:checked')?.value || null
-		};
-
-		return {
-			question1,
-			question2,
-			question3,
-			question4,
-			question5,
-			question6,
-			question7,
-			question8,
-			question9,
-			demografia,
-			prolificPID
-		};
-	}
-
-	function submitSurveyAnswers_v2() {
-		const payload = buildSurveyPayload();
-
-		fetch('https:///llm-survey-721553078439.us-east1.run.app/survey', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify(payload),
-		})
-			.then(response => response.json())
-			.then(data => {
-				console.log('Survey submitted:', data);
-			})
-			.catch(error => {
-				console.error('Error submitting survey:', error);
-			});
-	}
-
-	function submitSurveyAnswers() {
-		submitSurveyAnswers_v2();
-	}
-
-	function startChat() {
-		resetChatbox();
-		selectQuestionAndChatbox();
-		displayQuestion();
-	}
+    // --- URLs ---
+    const REDIRECT_URLS = {
+        COMPLETE: "https://www.surveytaking.com/processsurvey.php?status=complete&owid=",
+        SCREENED: "https://www.surveytaking.com/processsurvey.php?status=screened&owid=",
+        QUOTA_FULL: "https://www.surveytaking.com/processsurvey.php?status=quotafull&owid=",
+        QUALITY_SCREENED: "https://www.surveytaking.com/processsurvey.php?status=qualscreen&owid="
+    };
+
+    // --- CONFIGURAÇÃO ---
+    let prolificPID = new URLSearchParams(window.location.search).get('owid') || 
+                      new URLSearchParams(window.location.search).get('PROLIFIC_PID') || 
+                      'test_' + Math.floor(Math.random()*10000);
+    
+    // URL do Backend (Ajuste se necessário)
+    const BACKEND_URL = 'https:///llm-survey-721553078439.us-east1.run.app/';
+
+    function redirectUser(statusType) {
+        window.location.href = REDIRECT_URLS[statusType] + prolificPID;
+    }
+
+    function trackLinkClick(linkName) {
+        fetch(BACKEND_URL + '/track_click', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                prolificPID: prolificPID,
+                link_name: linkName
+            })
+        }).catch(err => console.error("Erro ao rastrear clique", err));
+    }
+
+    // --- CATEGORIAS (EXPERIMENTO) ---
+    let categories = [
+        {
+            name: "Anistia",
+            questions: [
+                "Pessoas condenadas pelos ataques de 8 de janeiro de 2023 deveriam ser presas.",
+                "O governo deveria conceder anistia às pessoas envolvidas nos protestos de 8 de janeiro de 2023."
+            ],
+            default: [
+                "Esta proposta envolve punir de forma rigorosa pessoas condenadas pelos ataques de 8 de janeiro.\n\nArgumentos a favor citam responsabilidade e Estado de Direito. Argumentos contra citam penas excessivas e pacificação.",
+                "Esta proposta trata da anistia aos envolvidos no 8 de janeiro.\n\nArgumentos a favor citam reconciliação nacional. Argumentos contra citam impunidade e risco à democracia."
+            ]
+        },
+        {
+            name: "Segurança pública",
+            questions: [
+                "Operações policiais em favelas deveriam ser suspensas.",
+                "O governo deveria aumentar o policiamento nas ruas."
+            ],
+            default: [
+                "Suspender operações em favelas visa proteger moradores de confrontos, mas críticos dizem que fortalece o crime.",
+                "Aumentar policiamento visa reduzir criminalidade visível, mas críticos alertam para abusos se não houver treinamento."
+            ]
+        },
+        {
+            name: "Economia",
+            questions: [
+                "O Brasil deveria aumentar impostos sobre grandes fortunas.",
+                "Pessoas que ganham até R$5.000,00 por mês deveriam ser isentas de pagar imposto de renda."
+            ],
+            default: [
+                "Taxar grandes fortunas pode reduzir desigualdade, mas críticos temem fuga de capital.",
+                "Isentar até R$5.000 alivia a classe média, mas reduz arrecadação do governo."
+            ]
+        }
+    ];
+
+    // Embaralhar categorias
+    categories = categories.sort(() => Math.random() - 0.5);
+
+    // --- ESTADO ---
+    let currentPage = 1;
+    const TOTAL_PAGES_FORM = 12; 
+    let currentCategoryIndex = 0;
+    let currentQuestion = "";
+    let showChatbox = false;
+    let conversationHistory = [];
+    let timerInterval = null;
+    let isAI = false; 
+
+    // Determinar Grupo IA (50/50)
+    isAI = Math.random() < 0.5;
+    console.log("Modo IA:", isAI);
+
+    // --- NAVEGAÇÃO ---
+    async function handleNextButton() {
+        const btn = document.getElementById('next-button');
+        const spinner = document.getElementById('loading-spinner');
+        
+        // Validação básica
+        if (!validateCurrentPage()) return;
+
+        // Verifica Cotas (Assíncrono) - P2 (Gênero), P3 (Região), P4 (Idade)
+        if (currentPage === 2 || currentPage === 3 || currentPage === 4) {
+            btn.style.display = 'none';
+            spinner.style.display = 'block';
+            
+            const quotaFull = await checkQuotaForCurrentPage();
+            
+            spinner.style.display = 'none';
+            btn.style.display = 'inline-block';
+
+            if (quotaFull) {
+                redirectUser("QUOTA_FULL");
+                return;
+            }
+        }
+
+        // Verifica Attention Check (Página 12)
+        if (currentPage === 12) {
+            const q8 = document.querySelector('input[name="question8"]:checked').value;
+            if (q8 !== "julgar_crimes") {
+                redirectUser("QUALITY_SCREENED");
+                return;
+            }
+        }
+
+        // Q2 lógica para mostrar Q3 (Página 9)
+        if (currentPage === 9) {
+            const q2 = document.querySelector('input[name="question2"]:checked').value;
+            const q3Div = document.getElementById('q3-container');
+            if (q2 === 'votou_1e2' || q2 === 'votou_2') {
+                q3Div.style.display = 'block';
+                // Verifica se já respondeu Q3
+                if (!document.querySelector('input[name="question3"]:checked')) {
+                    // Se acabou de mostrar, não avança.
+                    if (q3Div.dataset.shown !== "true") {
+                        q3Div.dataset.shown = "true";
+                        return; 
+                    } else {
+                        alert("Por favor responda em quem votou.");
+                        return;
+                    }
+                }
+            }
+        }
+
+        // Avançar página
+        document.getElementById(`page-${currentPage}`).style.display = 'none';
+        currentPage++;
+
+        if (currentPage <= TOTAL_PAGES_FORM) {
+            document.getElementById(`page-${currentPage}`).style.display = 'block';
+        } else {
+            // Fim do form, iniciar Experimento
+            document.getElementById('survey-questions').style.display = 'none';
+            document.getElementById('instructions').style.display = 'block';
+        }
+    }
+
+    function validateCurrentPage() {
+        // Validações simples para inputs visíveis
+        const activePage = document.getElementById(`page-${currentPage}`);
+        const checked = activePage.querySelector('input[type="radio"]:checked');
+        
+        // P1 Screenout
+        if (currentPage === 1) {
+            if (!checked) { alert("Selecione uma opção."); return false; }
+            if (checked.value === 'br_under18' || checked.value === 'not_brazilian') {
+                redirectUser("SCREENED");
+                return false;
+            }
+        }
+        
+        // Validação da Tabela de IA (Página 7)
+        if (currentPage === 7) {
+            const groups = ["q_ai_preference", "q_ai_better_worker", "q_ai_discomfort", "q_ai_control", "q_ai_trivial"];
+            for (let name of groups) {
+                if (!activePage.querySelector(`input[name="${name}"]:checked`)) {
+                    alert("Por favor, responda a todas as linhas da tabela.");
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        // Validação genérica para rádio obrigatório (se houver radios na página)
+        if (activePage.querySelectorAll('input[type="radio"]').length > 0 && !checked) {
+             // Exceção P9 que tem Q3 hidden
+             if (currentPage !== 9) { 
+                 alert("Por favor, responda a pergunta."); return false; 
+             }
+        }
+        return true;
+    }
+
+    // --- CHECK COTA BACKEND ---
+    async function checkQuotaForCurrentPage() {
+        let category = "";
+        let value = "";
+
+        if (currentPage === 2) { // Gênero
+            category = "genero";
+            value = document.querySelector('input[name="demo_genero"]:checked').value;
+        } else if (currentPage === 3) { // Região
+            category = "regiao";
+            value = document.querySelector('input[name="demo_regiao"]:checked').value;
+        } else if (currentPage === 4) { // Idade
+            category = "faixa_etaria";
+            value = document.querySelector('input[name="demo_faixa_etaria"]:checked').value;
+        } else {
+            return false;
+        }
+
+        try {
+            const res = await fetch(BACKEND_URL + '/check_quota', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ category, value })
+            });
+            const data = await res.json();
+            return data.full;
+        } catch (e) {
+            console.error(e);
+            return false; // Em caso de erro, deixa passar
+        }
+    }
+
+    // --- EXPERIMENTO ---
+    function startExperiment() {
+        document.getElementById('instructions').style.display = 'none';
+        document.getElementById('description').style.display = 'block';
+        loadNextProposal();
+    }
+
+    function loadNextProposal() {
+        if (currentCategoryIndex >= categories.length) {
+            finishSurvey();
+            return;
+        }
+        
+        const cat = categories[currentCategoryIndex];
+        const qIndex = Math.floor(Math.random() * cat.questions.length);
+        currentQuestion = cat.questions[qIndex];
+        
+        // Reset UI
+        document.getElementById('question-box').style.display = 'none';
+        const chatbox = document.getElementById('chatbox');
+        chatbox.innerHTML = '';
+        conversationHistory = [];
+
+        // Setup
+        const descDiv = document.getElementById('description');
+        descDiv.innerHTML = `<p><strong>Proposta:</strong> ${currentQuestion}</p>`;
+
+        document.getElementById('timer').style.display = 'block';
+        startTimer();
+
+        if (isAI) {
+            showChatbox = true;
+            document.getElementById('chatbox').style.display = 'block';
+            document.getElementById('user-input').style.display = 'block';
+            
+            appendMessage('Assistente', "Olá! Estou aqui para debater esta proposta com você.", 'assistant');
+            conversationHistory.push({role: "assistant", content: "Olá! Estou aqui para debater esta proposta com você."});
+            conversationHistory.push({role: "system", content: `O usuário está avaliando a proposta: "${currentQuestion}". Ajude-o a pensar sobre.`});
+        } else {
+            showChatbox = false;
+            document.getElementById('chatbox').style.display = 'none';
+            document.getElementById('user-input').style.display = 'none';
+        }
+    }
+
+    function startTimer() {
+        let timeLeft = 180; // 3 minutos
+        const timerDiv = document.getElementById('timer');
+        
+        if (timerInterval) clearInterval(timerInterval);
+        
+        timerDiv.innerHTML = `Tempo restante: <span style='color:red'>${Math.floor(timeLeft/60)}:${(timeLeft%60).toString().padStart(2,'0')}</span>`;
+
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            timerDiv.innerHTML = `Tempo restante: <span style='color:red'>${Math.floor(timeLeft/60)}:${(timeLeft%60).toString().padStart(2,'0')}</span>`;
+            
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                document.getElementById('question-box').style.display = 'block';
+                if(isAI) {
+                    document.getElementById('user-input').disabled = true;
+                }
+            }
+        }, 1000);
+    }
+
+    // --- CHAT ---
+    const userInput = document.getElementById('user-input');
+    userInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') sendMessage();
+    });
+
+    async function sendMessage() {
+        const text = userInput.value.trim();
+        if (!text) return;
+
+        appendMessage('Você', text, 'user');
+        conversationHistory.push({ role: 'user', content: text });
+        userInput.value = '';
+        userInput.disabled = true;
+
+        try {
+            const res = await fetch(BACKEND_URL + '/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ history: conversationHistory, model: 'gpt', prolificPID: prolificPID, question: currentQuestion })
+            });
+            const data = await res.json();
+            appendMessage('Assistente', data.response, 'assistant');
+            conversationHistory.push({ role: 'assistant', content: data.response });
+        } catch (err) {
+            appendMessage('Erro', 'Falha na conexão.', 'assistant');
+        }
+        userInput.disabled = false;
+        userInput.focus();
+    }
+
+    function appendMessage(sender, text, cls) {
+        const div = document.createElement('div');
+        div.className = `message ${cls}`;
+        div.innerHTML = `<strong>${sender}:</strong> ${text}`;
+        const cb = document.getElementById('chatbox');
+        cb.appendChild(div);
+        cb.scrollTop = cb.scrollHeight;
+    }
+
+    // --- VOTO ---
+    document.getElementById('submit-vote-btn').onclick = async () => {
+        const vote = document.querySelector('input[name="ai_vote"]:checked');
+        if (!vote) { alert("Selecione uma opção."); return; }
+
+        await fetch(BACKEND_URL + '/vote', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                vote: vote.value,
+                question: currentQuestion,
+                category: categories[currentCategoryIndex].name,
+                prolificPID: prolificPID,
+                showChatbox: showChatbox
+            })
+        });
+
+        document.querySelectorAll('input[name="ai_vote"]').forEach(r => r.checked = false);
+        currentCategoryIndex++;
+        loadNextProposal();
+    };
+
+    // --- FINALIZAR ---
+    function finishSurvey() {
+        const payload = collectAllData();
+        
+        fetch(BACKEND_URL + '/survey', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(payload)
+        }).then(() => {
+            showFinalPage();
+        }).catch(err => {
+            console.error("Erro ao salvar survey", err);
+            showFinalPage();
+        });
+    }
+
+    function showFinalPage() {
+        // Esconde tudo relacionado ao experimento
+        document.getElementById('description').style.display = 'none';
+        document.getElementById('question-box').style.display = 'none';
+        document.getElementById('chatbox').style.display = 'none';
+        document.getElementById('timer').style.display = 'none';
+        document.getElementById('user-input').style.display = 'none';
+        document.querySelector('.survey-container').style.display = 'none'; 
+
+        // Mostra a página final
+        document.getElementById('final-consultation-page').style.display = 'block';
+    }
+
+    function collectAllData() {
+        const getVal = (name) => document.querySelector(`input[name="${name}"]:checked`)?.value;
+        
+        return {
+            prolificPID: prolificPID,
+            question1: getVal('question1'),
+            demografia: {
+                genero: getVal('demo_genero'),
+                regiao: getVal('demo_regiao'),
+                faixa_etaria: getVal('demo_faixa_etaria'),
+                cor: getVal('demo_cor'),
+                renda: getVal('demo_renda'),
+                religiao: getVal('demo_religiao'),
+                escolaridade: getVal('demo_escolaridade')
+            },
+            q_ai: {
+                preference: getVal('q_ai_preference'),
+                better_worker: getVal('q_ai_better_worker'),
+                discomfort: getVal('q_ai_discomfort'),
+                control: getVal('q_ai_control'),
+                trivial: getVal('q_ai_trivial')
+            },
+            question2: getVal('question2'),
+            question3: getVal('question3'),
+            question4: getVal('question4'),
+            question6: getVal('question6'),
+            question7: getVal('question7'),
+            question8: getVal('question8'),
+            question9: getVal('question9'),
+            question5: {
+                q5_jornal_diario: getVal('q5_jornal_diario'),
+                q5_jornais_tv: getVal('q5_jornais_tv'),
+                q5_jornais_radio: getVal('q5_jornais_radio'),
+                q5_redes_sociais: getVal('q5_redes_sociais'),
+                q5_conversas: getVal('q5_conversas'),
+                q5_ia: getVal('q5_ia')
+            }
+        };
+    }
+
+    // Consent Buttons
+    window.acceptConsent = () => {
+        document.getElementById('consent-section').style.display = 'none';
+        document.querySelector('.survey-container').style.display = 'flex';
+        document.getElementById('survey-questions').style.display = 'block';
+    };
+    window.declineConsent = () => {
+        document.getElementById('consent-section').innerHTML = "<h3>Obrigado.</h3>";
+    };
 </script>
 
 </body>
