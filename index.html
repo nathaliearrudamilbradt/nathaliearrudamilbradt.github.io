@@ -6,72 +6,146 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Pesquisa de Opinião</title>
 <style>
-	body { font-family: 'Arial', sans-serif; margin: 20px; background: #f4f4f4; color: #333; }
+    /* --- ESTILOS GERAIS --- */
+	body {
+		font-family: 'Arial', sans-serif;
+		margin: 20px;
+		background: #f4f4f4;
+		color: #333;
+	}
 	h1 { text-align: center; color: #444; }
-	#timer { font-size: 18px; color: #000; text-align: center; margin-bottom: 10px; }
-	#chatbox {
-		border: 2px solid #ddd; border-radius: 10px; padding: 15px; background: #fff;
-		height: 400px; overflow-y: auto; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-		margin-bottom: 10px; font-size: 16px; white-space: pre-wrap; word-wrap: break-word;
-	}
-	#user-input {
-		width: calc(100% - 80px); padding: 10px; font-size: 16px; border: 2px solid #ddd;
-		border-radius: 20px; outline: none; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-	}
-	.message { margin: 10px 0; padding: 10px; border-radius: 10px; max-width: 80%; line-height: 1.5; }
-	.user { background: #cce5ff; align-self: flex-end; color: #004085; text-align: right; margin-left: auto; }
-	.assistant { background: #f8d7da; align-self: flex-start; color: #721c24; text-align: left; margin-right: auto; }
-	#description p {
-		font-size: 18px; color: #333; background-color: #f9f9f9; padding: 15px;
-		border: 1px solid #ddd; border-radius: 10px; margin: 0 auto; max-width: 700px;
-	}
-	.survey-container {
-		display: flex; justify-content: center; align-items: center;
-		background-color: #f9f9f9; margin: 0 auto; max-width: 800px; padding: 20px; display: none;
-	}
     
-    /* --- CSS PARA CLIQUE NO TEXTO (NOVO) --- */
-    .option-label {
-        display: block; /* Ocupa a linha inteira */
-        padding: 8px 5px; /* Espaço para clique */
-        margin-bottom: 5px;
-        cursor: pointer; /* Mãozinha */
+    /* --- CONTAINER DA PESQUISA (DEMOGRAFIA/PERGUNTAS) --- */
+	.survey-container {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		background-color: #f9f9f9;
+		margin: 0 auto;
+		max-width: 800px;
+		padding: 20px;
+		display: none; /* Inicia oculto */
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+	}
+
+    /* --- RESPOSTAS CLICÁVEIS (UX) --- */
+    .option-row {
+        display: block;
+        padding: 12px 15px;
+        margin: 8px 0;
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.2s;
         font-size: 16px;
     }
-    .option-label:hover {
-        background-color: #e9ecef; /* Feedback visual ao passar o mouse */
-        border-radius: 5px;
+    .option-row:hover {
+        background-color: #e9ecef;
+        border-color: #bbb;
     }
-    .option-label input[type="radio"] {
-        margin-right: 10px;
-        transform: scale(1.2); /* Aumenta um pouco o botão */
+    .option-row input[type="radio"] {
+        margin-right: 12px;
+        transform: scale(1.3);
+        vertical-align: middle;
     }
 
-    /* Estilos da Escala Responsiva (1-10) */
-    .scale-wrapper { display: flex; flex-direction: column; align-items: center; width: 100%; }
-    .scale-options { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    /* --- TABELAS (Q5 e Q9) --- */
+    table { width: 100%; border-collapse: collapse; font-size: 14px; background: white; }
+    th, td { border: 1px solid #ccc; padding: 10px; text-align: center; }
+    th { background-color: #eee; }
+    td label { display: block; width: 100%; height: 100%; cursor: pointer; }
+    td input { transform: scale(1.2); }
+
+    /* --- CONTAINER DA INTERAÇÃO COM IA (NOVO - RESPONSIVO) --- */
+    #ai-section {
+        display: none; /* Controlado via JS */
+        flex-direction: column; /* Um embaixo do outro */
+        gap: 15px; /* Espaço entre elementos */
+        max-width: 800px;
+        margin: 0 auto;
+        width: 100%;
+    }
+
+    /* Proposta */
+	#description p {
+		font-size: 18px; color: #333; background-color: #f9f9f9; padding: 15px;
+		border: 1px solid #ddd; border-radius: 10px; margin: 0;
+	}
+
+    /* Timer */
+	#timer {
+		font-size: 18px;
+		color: #d9534f; /* Vermelho suave */
+		text-align: center;
+        font-weight: bold;
+        background: #fff;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+	}
+
+    /* Chatbox */
+	#chatbox {
+		border: 2px solid #ddd;
+		border-radius: 10px;
+		padding: 15px;
+		background: #fff;
+		height: 400px;
+		overflow-y: auto;
+		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+		font-size: 16px;
+		white-space: pre-wrap;
+		word-wrap: break-word;
+        width: 100%;
+        box-sizing: border-box; /* Garante que padding não estoure largura */
+	}
+
+    /* Input do Usuário */
+	#user-input {
+		width: 100%;
+		padding: 15px;
+		font-size: 16px;
+		border: 2px solid #ddd;
+		border-radius: 20px;
+		outline: none;
+        box-sizing: border-box; /* Garante largura correta */
+        display: block;
+	}
+    #user-input:focus { border-color: #007bff; }
+
+	.message {
+		margin: 10px 0;
+		padding: 10px;
+		border-radius: 10px;
+		max-width: 85%;
+		line-height: 1.5;
+	}
+	.user { background: #cce5ff; align-self: flex-end; color: #004085; margin-left: auto; text-align: right; }
+	.assistant { background: #f8d7da; align-self: flex-start; color: #721c24; margin-right: auto; text-align: left; }
     
-    /* Estilo para Tabela Likert (IA) */
-    .likert-table { width: 100%; border-collapse: collapse; font-size: 14px; }
-    .likert-table th, .likert-table td { border: 1px solid #ccc; padding: 8px; text-align: center; }
-    .likert-table th { background-color: #eee; }
-    .likert-row-label { text-align: left !important; width: 40%; }
-    /* Clique na célula da tabela */
-    .likert-table td label { display: block; width: 100%; height: 100%; cursor: pointer; } 
-
-    /* Estilo para a votação do Experimento (Vertical) */
-    .ai-vote-container {
-        display: flex; flex-direction: column; gap: 12px; max-width: 500px; margin: 0 auto;
+    /* Box de Votação Final (IA) */
+    #question-box {
+        background: #fff; padding: 20px; border-radius: 10px; border: 1px solid #ddd;
+        text-align: center; margin-top: 20px; margin-bottom: 30px;
     }
-    .ai-vote-option {
-        display: flex; align-items: center; padding: 12px 15px; border: 1px solid #ddd;
-        border-radius: 8px; background-color: #fff; cursor: pointer; transition: background-color 0.2s; text-align: left;
+    .ai-options-container {
+        display: flex; flex-direction: column; gap: 10px; max-width: 600px; margin: 20px auto; text-align: left;
     }
-    .ai-vote-option:hover { background-color: #e9ecef; }
-    .ai-vote-option input { margin-right: 12px; transform: scale(1.2); }
-    .ai-vote-option span { font-size: 16px; }
+    .ai-option-card {
+        display: flex; align-items: center; padding: 15px; background: white;
+        border: 1px solid #ccc; border-radius: 8px; cursor: pointer; transition: transform 0.1s;
+    }
+    .ai-option-card:hover { background: #f8f9fa; border-color: #007bff; }
+    .ai-option-card input { margin-right: 15px; transform: scale(1.4); }
+    .ai-option-card span { font-size: 16px; font-weight: 500; }
 
-    /* Estilo para as caixas de Consulta Pública (Final) */
+    /* BOTÕES GERAIS */
+    #navigation-buttons { margin-top: 20px; text-align: center; }
+    button { cursor: pointer; }
+
+    /* CONSULTA PÚBLICA FINAL */
     .consultation-box {
         display: block; background-color: #fff; border: 2px solid #004085;
         border-radius: 8px; padding: 20px; margin: 15px 0; text-decoration: none;
@@ -81,149 +155,142 @@
         transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         background-color: #f0f8ff;
     }
-    .consultation-title {
-        font-weight: bold; color: #0056b3; font-size: 16px; margin-bottom: 5px; display: block;
-    }
+    .consultation-title { font-weight: bold; color: #0056b3; font-size: 16px; margin-bottom: 5px; display: block; }
     .consultation-url { font-size: 12px; color: #666; display: block; }
 
+    /* --- RESPONSIVIDADE MOBILE (CELULAR) --- */
     @media (max-width: 600px) {
-        .scale-options { flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start; width: 100%; padding-bottom: 10px; }
-        .scale-options label { flex: 0 0 auto; min-width: 30px; }
+        /* Ajuste de tabelas */
+        table { font-size: 11px; }
+        th, td { padding: 5px; }
+        .option-row { padding: 10px; font-size: 15px; }
         
-        .likert-table { font-size: 12px; }
-        .likert-table th, .likert-table td { padding: 4px; }
+        /* Ajuste da Seção de IA */
+        #ai-section { gap: 10px; }
+        #description p { font-size: 16px; padding: 10px; }
+        #chatbox { height: 300px; /* Menor em celulares */ }
+        #timer { font-size: 16px; padding: 8px; }
     }
 </style>
 </head>
 <body>
 
-<div id="consent-section" style="margin-top: 50px;">
-	<p style="font-size: 18px; color: #555; line-height: 1.5; margin-bottom: 20px;">
+<div id="consent-section" style="margin-top: 50px; text-align: center; max-width: 800px; margin: 50px auto; padding: 0 15px;">
+	<p style="font-size: 18px; color: #555; line-height: 1.5; margin-bottom: 20px; text-align: left;">
 		<strong>Termo de consentimento </strong><br><br>
 		Você está sendo convidado(a) a participar de um estudo de pesquisa acadêmica. Sua participação é totalmente voluntária.
-		<br><br>
-		<b>Propósito da Pesquisa.</b><br>
-		Este estudo faz parte de uma pesquisa acadêmica cujo objetivo é entender melhor como modelos de inteligência artificial podem influenciar opiniões e raciocínio político. Você está sendo convidado(a) porque tem mais de 18 anos e é brasileiro(a).
-		<br><br>
-		<b>Procedimentos.</b><br>
-		Durante o estudo, você verá uma série de cenários políticos hipotéticos e responderá perguntas sobre eles. Em alguns casos, poderá ser convidado(a) a interagir por alguns minutos com uma ferramenta automatizada com inteligência artificial antes de responder às perguntas. Ao final, você será solicitado(a) a registrar sua opinião.
-		<br><br>
-		<b>Duração.</b><br>
-		A participação envolverá aproximadamente 10 minutos do seu tempo.
-		<br><br>
-		<b>Riscos e Benefícios.</b><br>
-		Não esperamos riscos associados à sua participação. Você não receberá benefícios diretos, mas contribuirá para a ciência.
-		<br><br>
-		<b>Privacidade.</b><br>
-		Todas as suas respostas serão mantidas 100% confidenciais e anônimas.
+        <br><br><b>Propósito:</b> Entender como modelos de IA influenciam opiniões políticas.
+        <br><b>Procedimentos:</b> Responder perguntas e interagir com uma IA.
+		<br><b>Duração:</b> Aprox. 10 minutos.
+        <br><b>Privacidade:</b> Respostas anônimas e confidenciais.
 		<br><br>
 		Em caso de dúvidas: <i>Nathalie Arruda Milbradt (nathaliearrudamilbradt@college.harvard.edu)</i>
 	</p>
-	<button onclick="acceptConsent()" style="margin-right: 10px; padding: 10px 20px; font-size: 18px; cursor: pointer;">Aceito os termos</button>
-    <button onclick="declineConsent()" style="padding: 10px 20px; font-size: 18px; cursor: pointer;">Recuso os termos</button>
+	<button onclick="acceptConsent()" style="padding: 10px 20px; font-size: 18px; background: #28a745; color: white; border: none; border-radius: 5px;">Aceito os termos</button>
+    <button onclick="declineConsent()" style="padding: 10px 20px; font-size: 18px; border: 1px solid #ccc; background: #fff; border-radius: 5px;">Recuso os termos</button>
 </div>
 
-<div id="instructions" style="margin-top: 50px; display: none;">
-	<p style="font-size: 18px; color: #555; line-height: 1.5; margin-bottom: 20px;">
+<div id="instructions" style="margin-top: 50px; display: none; text-align: center; max-width: 800px; margin: 50px auto; padding: 0 15px;">
+	<p style="font-size: 18px; color: #555; line-height: 1.5;">
 		Em seguida, vamos apresentar algumas <strong>propostas políticas</strong>.
 		<br><br>
 		Para ajudar na decisão, em alguns casos você poderá conversar com um <strong>assistente de inteligência artificial (IA)</strong>.
 		<br><br>
 		Quando o chatbot estiver disponível, pedimos que você converse com ele por <strong>pelo menos 3 minutos</strong>.
 	</p>
-	<button onclick="startExperiment()" style="margin-right: 10px; padding: 10px 20px; font-size: 18px; cursor: pointer;">Iniciar</button>
+	<button onclick="startExperiment()" style="padding: 10px 20px; font-size: 18px; background: #007bff; color: white; border: none; border-radius: 5px;">Iniciar</button>
 </div>
 
 <div class="survey-container">
-	<div id="survey-questions" style="display: none; text-align: left; margin-top: 20px; width: 100%;">
-        
+	<div id="survey-questions" style="display: none; width: 100%;">
+
         <div class="survey-page" id="page-1" style="display: block;">
 			<p>Qual das opções descreve melhor você?</p>
 			<div style="text-align: left;">
-				<label class="option-label"><input id="q1_opt1" name="question1" type="radio" value="br_18plus"/> Sou brasileira(o) e tenho 18 anos ou mais</label>
-				<label class="option-label"><input id="q1_opt2" name="question1" type="radio" value="br_under18"/> Sou brasileira(o) e tenho menos de 18 anos</label>
-				<label class="option-label"><input id="q1_opt3" name="question1" type="radio" value="not_brazilian"/> Não sou brasileira(o)</label>
+				<label class="option-row"><input type="radio" name="question1" value="br_18plus"> Sou brasileira(o) e tenho 18 anos ou mais</label>
+				<label class="option-row"><input type="radio" name="question1" value="br_under18"> Sou brasileira(o) e tenho menos de 18 anos</label>
+				<label class="option-row"><input type="radio" name="question1" value="not_brazilian"> Não sou brasileira(o)</label>
 			</div>
 		</div>
 
         <div class="survey-page" id="page-2" style="display: none;">
 			<p>Qual é o seu gênero?</p>
 			<div style="text-align: left;">
-				<label class="option-label"><input name="demo_genero" type="radio" value="feminino"/> Feminino</label>
-				<label class="option-label"><input name="demo_genero" type="radio" value="masculino"/> Masculino</label>
-				<label class="option-label"><input name="demo_genero" type="radio" value="outro"/> Outro</label>
-				<label class="option-label"><input name="demo_genero" type="radio" value="prefiro_nao_responder"/> Prefiro não responder</label>
+				<label class="option-row"><input type="radio" name="demo_genero" value="feminino"> Feminino</label>
+				<label class="option-row"><input type="radio" name="demo_genero" value="masculino"> Masculino</label>
+				<label class="option-row"><input type="radio" name="demo_genero" value="outro"> Outro</label>
+				<label class="option-row"><input type="radio" name="demo_genero" value="prefiro_nao_responder"> Prefiro não responder</label>
 			</div>
 		</div>
 
         <div class="survey-page" id="page-3" style="display: none;">
 			<p>Em qual região do Brasil você mora atualmente?</p>
 			<div style="text-align: left;">
-				<label class="option-label"><input name="demo_regiao" type="radio" value="norte"/> Norte</label>
-				<label class="option-label"><input name="demo_regiao" type="radio" value="nordeste"/> Nordeste</label>
-				<label class="option-label"><input name="demo_regiao" type="radio" value="centro_oeste"/> Centro-Oeste</label>
-				<label class="option-label"><input name="demo_regiao" type="radio" value="sudeste"/> Sudeste</label>
-				<label class="option-label"><input name="demo_regiao" type="radio" value="sul"/> Sul</label>
+				<label class="option-row"><input type="radio" name="demo_regiao" value="norte"> Norte</label>
+				<label class="option-row"><input type="radio" name="demo_regiao" value="nordeste"> Nordeste</label>
+				<label class="option-row"><input type="radio" name="demo_regiao" value="centro_oeste"> Centro-Oeste</label>
+				<label class="option-row"><input type="radio" name="demo_regiao" value="sudeste"> Sudeste</label>
+				<label class="option-row"><input type="radio" name="demo_regiao" value="sul"> Sul</label>
 			</div>
 		</div>
 
         <div class="survey-page" id="page-4" style="display: none;">
 			<p>Qual é a sua faixa etária?</p>
 			<div style="text-align: left;">
-				<label class="option-label"><input name="demo_faixa_etaria" type="radio" value="18_24"/> 18 a 24 anos</label>
-				<label class="option-label"><input name="demo_faixa_etaria" type="radio" value="25_34"/> 25 a 34 anos</label>
-				<label class="option-label"><input name="demo_faixa_etaria" type="radio" value="35_44"/> 35 a 44 anos</label>
-				<label class="option-label"><input name="demo_faixa_etaria" type="radio" value="45_54"/> 45 a 54 anos</label>
-				<label class="option-label"><input name="demo_faixa_etaria" type="radio" value="55_mais"/> 55 anos ou mais</label>
+				<label class="option-row"><input type="radio" name="demo_faixa_etaria" value="18_24"> 18 a 24 anos</label>
+				<label class="option-row"><input type="radio" name="demo_faixa_etaria" value="25_34"> 25 a 34 anos</label>
+				<label class="option-row"><input type="radio" name="demo_faixa_etaria" value="35_44"> 35 a 44 anos</label>
+				<label class="option-row"><input type="radio" name="demo_faixa_etaria" value="45_54"> 45 a 54 anos</label>
+				<label class="option-row"><input type="radio" name="demo_faixa_etaria" value="55_mais"> 55 anos ou mais</label>
 			</div>
 		</div>
 
         <div class="survey-page" id="page-5" style="display: none;">
 			<p>Como você se autodeclara em termos de cor ou raça?</p>
 			<div>
-				<label class="option-label"><input name="demo_cor" type="radio" value="branca"/> Branca</label>
-				<label class="option-label"><input name="demo_cor" type="radio" value="preta"/> Preta</label>
-				<label class="option-label"><input name="demo_cor" type="radio" value="parda"/> Parda</label>
-				<label class="option-label"><input name="demo_cor" type="radio" value="amarela"/> Amarela</label>
-				<label class="option-label"><input name="demo_cor" type="radio" value="indigena"/> Indígena</label>
-				<label class="option-label"><input name="demo_cor" type="radio" value="outra"/> Outra</label>
+				<label class="option-row"><input type="radio" name="demo_cor" value="branca"> Branca</label>
+				<label class="option-row"><input type="radio" name="demo_cor" value="preta"> Preta</label>
+				<label class="option-row"><input type="radio" name="demo_cor" value="parda"> Parda</label>
+				<label class="option-row"><input type="radio" name="demo_cor" value="amarela"> Amarela</label>
+				<label class="option-row"><input type="radio" name="demo_cor" value="indigena"> Indígena</label>
+				<label class="option-row"><input type="radio" name="demo_cor" value="outra"> Outra</label>
 			</div>
         </div>
 
         <div class="survey-page" id="page-6" style="display: none;">
             <p>Qual é a renda mensal total do seu domicílio (somando todas as pessoas que contribuem com renda)?</p>
 			<div>
-				<label class="option-label"><input name="demo_renda" type="radio" value="ate_1sm"/> Até 1 salário mínimo</label>
-				<label class="option-label"><input name="demo_renda" type="radio" value="1a2sm"/> Entre 1 e 2 salários mínimos</label>
-				<label class="option-label"><input name="demo_renda" type="radio" value="2a5sm"/> Entre 2 e 5 salários mínimos</label>
-				<label class="option-label"><input name="demo_renda" type="radio" value="5a10sm"/> Entre 5 e 10 salários mínimos</label>
-				<label class="option-label"><input name="demo_renda" type="radio" value="mais_10sm"/> Mais de 10 salários mínimos</label>
+				<label class="option-row"><input type="radio" name="demo_renda" value="ate_1sm"> Até 1 salário mínimo</label>
+				<label class="option-row"><input type="radio" name="demo_renda" value="1a2sm"> Entre 1 e 2 salários mínimos</label>
+				<label class="option-row"><input type="radio" name="demo_renda" value="2a5sm"> Entre 2 e 5 salários mínimos</label>
+				<label class="option-row"><input type="radio" name="demo_renda" value="5a10sm"> Entre 5 e 10 salários mínimos</label>
+				<label class="option-row"><input type="radio" name="demo_renda" value="mais_10sm"> Mais de 10 salários mínimos</label>
 			</div>
 		</div>
 
         <div class="survey-page" id="page-7" style="display: none;">
 			<p>Qual é a sua religião?</p>
 			<div>
-				<label class="option-label"><input name="demo_religiao" type="radio" value="catolica"/> Católica</label>
-				<label class="option-label"><input name="demo_religiao" type="radio" value="evangelica_pentecostal"/> Evangélica – Pentecostal</label>
-				<label class="option-label"><input name="demo_religiao" type="radio" value="evangelica_nao_pentecostal"/> Evangélica – Não pentecostal</label>
-				<label class="option-label"><input name="demo_religiao" type="radio" value="espirita"/> Espírita</label>
-				<label class="option-label"><input name="demo_religiao" type="radio" value="umbanda_candomble"/> Umbanda / Candomblé</label>
-				<label class="option-label"><input name="demo_religiao" type="radio" value="outra"/> Outra religião</label>
-				<label class="option-label"><input name="demo_religiao" type="radio" value="sem_religiao"/> Sem religião</label>
+				<label class="option-row"><input type="radio" name="demo_religiao" value="catolica"> Católica</label>
+				<label class="option-row"><input type="radio" name="demo_religiao" value="evangelica_pentecostal"> Evangélica – Pentecostal</label>
+				<label class="option-row"><input type="radio" name="demo_religiao" value="evangelica_nao_pentecostal"> Evangélica – Não pentecostal</label>
+				<label class="option-row"><input type="radio" name="demo_religiao" value="espirita"> Espírita</label>
+				<label class="option-row"><input type="radio" name="demo_religiao" value="umbanda_candomble"> Umbanda / Candomblé</label>
+				<label class="option-row"><input type="radio" name="demo_religiao" value="outra"> Outra religião</label>
+				<label class="option-row"><input type="radio" name="demo_religiao" value="sem_religiao"> Sem religião</label>
 			</div>
         </div>
 
         <div class="survey-page" id="page-8" style="display: none;">
             <p>Qual o nível mais alto de escolaridade que você completou?</p>
 			<div>
-				<label class="option-label"><input name="demo_escolaridade" type="radio" value="fundamental_incompleto"/> Ensino fundamental incompleto</label>
-				<label class="option-label"><input name="demo_escolaridade" type="radio" value="fundamental_completo"/> Ensino fundamental completo</label>
-				<label class="option-label"><input name="demo_escolaridade" type="radio" value="medio_incompleto"/> Ensino médio incompleto</label>
-				<label class="option-label"><input name="demo_escolaridade" type="radio" value="medio_completo"/> Ensino médio completo</label>
-				<label class="option-label"><input name="demo_escolaridade" type="radio" value="superior_incompleto"/> Ensino superior incompleto</label>
-				<label class="option-label"><input name="demo_escolaridade" type="radio" value="superior_completo"/> Ensino superior completo</label>
-				<label class="option-label"><input name="demo_escolaridade" type="radio" value="pos_graduacao"/> Pós-graduação</label>
+				<label class="option-row"><input type="radio" name="demo_escolaridade" value="fundamental_incompleto"> Ensino fundamental incompleto</label>
+				<label class="option-row"><input type="radio" name="demo_escolaridade" value="fundamental_completo"> Ensino fundamental completo</label>
+				<label class="option-row"><input type="radio" name="demo_escolaridade" value="medio_incompleto"> Ensino médio incompleto</label>
+				<label class="option-row"><input type="radio" name="demo_escolaridade" value="medio_completo"> Ensino médio completo</label>
+				<label class="option-row"><input type="radio" name="demo_escolaridade" value="superior_incompleto"> Ensino superior incompleto</label>
+				<label class="option-row"><input type="radio" name="demo_escolaridade" value="superior_completo"> Ensino superior completo</label>
+				<label class="option-row"><input type="radio" name="demo_escolaridade" value="pos_graduacao"> Pós-graduação</label>
 			</div>
 		</div>
 
@@ -233,11 +300,9 @@
                 <thead>
                     <tr>
                         <th></th>
-                        <th>Discordo totalmente</th>
                         <th>Discordo</th>
                         <th>Neutro</th>
                         <th>Concordo</th>
-                        <th>Concordo totalmente</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -246,40 +311,30 @@
                         <td><label><input type="radio" name="q_ai_preference" value="1"></label></td>
                         <td><label><input type="radio" name="q_ai_preference" value="2"></label></td>
                         <td><label><input type="radio" name="q_ai_preference" value="3"></label></td>
-                        <td><label><input type="radio" name="q_ai_preference" value="4"></label></td>
-                        <td><label><input type="radio" name="q_ai_preference" value="5"></label></td>
                     </tr>
                     <tr>
                         <td class="likert-row-label">Um agente de inteligência artificial seria melhor do que um funcionário em muitos trabalhos rotineiros.</td>
                         <td><label><input type="radio" name="q_ai_better_worker" value="1"></label></td>
                         <td><label><input type="radio" name="q_ai_better_worker" value="2"></label></td>
                         <td><label><input type="radio" name="q_ai_better_worker" value="3"></label></td>
-                        <td><label><input type="radio" name="q_ai_better_worker" value="4"></label></td>
-                        <td><label><input type="radio" name="q_ai_better_worker" value="5"></label></td>
                     </tr>
                     <tr>
                         <td class="likert-row-label">Eu sinto desconforto quando penso nos usos futuros da inteligência artificial.</td>
                         <td><label><input type="radio" name="q_ai_discomfort" value="1"></label></td>
                         <td><label><input type="radio" name="q_ai_discomfort" value="2"></label></td>
                         <td><label><input type="radio" name="q_ai_discomfort" value="3"></label></td>
-                        <td><label><input type="radio" name="q_ai_discomfort" value="4"></label></td>
-                        <td><label><input type="radio" name="q_ai_discomfort" value="5"></label></td>
                     </tr>
                     <tr>
                         <td class="likert-row-label">A inteligência artificial pode vir a assumir o controle das pessoas.</td>
                         <td><label><input type="radio" name="q_ai_control" value="1"></label></td>
                         <td><label><input type="radio" name="q_ai_control" value="2"></label></td>
                         <td><label><input type="radio" name="q_ai_control" value="3"></label></td>
-                        <td><label><input type="radio" name="q_ai_control" value="4"></label></td>
-                        <td><label><input type="radio" name="q_ai_control" value="5"></label></td>
                     </tr>
                     <tr>
                         <td class="likert-row-label">Sistemas de inteligência artificial deveriam ser usados apenas para assuntos sem importância.</td>
                         <td><label><input type="radio" name="q_ai_trivial" value="1"></label></td>
                         <td><label><input type="radio" name="q_ai_trivial" value="2"></label></td>
                         <td><label><input type="radio" name="q_ai_trivial" value="3"></label></td>
-                        <td><label><input type="radio" name="q_ai_trivial" value="4"></label></td>
-                        <td><label><input type="radio" name="q_ai_trivial" value="5"></label></td>
                     </tr>
                 </tbody>
             </table>
@@ -296,48 +351,58 @@
         <div class="survey-page" id="page-11" style="display: none;">
 			<p>Na eleição de 2022 para presidente, você:</p>
 			<div>
-				<label class="option-label"><input name="question2" type="radio" value="votou_1e2"/> Votou no 1º e no 2º turno</label>
-				<label class="option-label"><input name="question2" type="radio" value="votou_1"/> Votou somente no 1º turno</label>
-				<label class="option-label"><input name="question2" type="radio" value="votou_2"/> Votou somente no 2º turno</label>
-				<label class="option-label"><input name="question2" type="radio" value="nao_votou"/> Não votou em nenhum turno</label>
-				<label class="option-label"><input name="question2" type="radio" value="nao_podia_votar"/> Não podia votar na época</label>
+				<label class="option-row"><input name="question2" type="radio" value="votou_1e2"/> Votou no 1º e no 2º turno</label>
+				<label class="option-row"><input name="question2" type="radio" value="votou_1"/> Votou somente no 1º turno</label>
+				<label class="option-row"><input name="question2" type="radio" value="votou_2"/> Votou somente no 2º turno</label>
+				<label class="option-row"><input name="question2" type="radio" value="nao_votou"/> Não votou em nenhum turno</label>
+				<label class="option-row"><input name="question2" type="radio" value="nao_podia_votar"/> Não podia votar na época</label>
 			</div>
 		</div>
 
         <div class="survey-page" id="page-12" style="display: none;">
             <p>Em quem você votou para presidente no segundo turno da eleição de 2022?</p>
             <div>
-                <label class="option-label"><input name="question3" type="radio" value="lula"/> Luiz Inácio Lula da Silva (PT)</label>
-                <label class="option-label"><input name="question3" type="radio" value="bolsonaro"/> Jair Bolsonaro (PL)</label>
-                <label class="option-label"><input name="question3" type="radio" value="branco_nulo"/> Votei em branco / nulo</label>
-                <label class="option-label"><input name="question3" type="radio" value="nao_compareci"/> Não votei / não compareci</label>
-                <label class="option-label"><input name="question3" type="radio" value="prefiro_nao_responder"/> Prefiro não responder</label>
+                <label class="option-row"><input name="question3" type="radio" value="lula"/> Luiz Inácio Lula da Silva (PT)</label>
+                <label class="option-row"><input name="question3" type="radio" value="bolsonaro"/> Jair Bolsonaro (PL)</label>
+                <label class="option-row"><input name="question3" type="radio" value="branco_nulo"/> Votei em branco / nulo</label>
+                <label class="option-row"><input name="question3" type="radio" value="nao_compareci"/> Não votei / não compareci</label>
+                <label class="option-row"><input name="question3" type="radio" value="prefiro_nao_responder"/> Prefiro não responder</label>
             </div>
         </div>
 
         <div class="survey-page" id="page-13" style="display: none;">
 			<p>Em uma escala de 1 a 10, na qual 1 significa “esquerda” e 10 significa “direita”, onde você diria que suas opiniões políticas se encaixam melhor?</p>
 			<div class="scale-options">
-                <label><input type="radio" name="question4" value="1">1</label>
-                <label><input type="radio" name="question4" value="2">2</label>
-                <label><input type="radio" name="question4" value="3">3</label>
-                <label><input type="radio" name="question4" value="4">4</label>
-                <label><input type="radio" name="question4" value="5">5</label>
-                <label><input type="radio" name="question4" value="6">6</label>
-                <label><input type="radio" name="question4" value="7">7</label>
-                <label><input type="radio" name="question4" value="8">8</label>
-                <label><input type="radio" name="question4" value="9">9</label>
-                <label><input type="radio" name="question4" value="10">10</label>
+                <label style="padding:10px; border:1px solid #ccc; cursor:pointer;"><input type="radio" name="question4" value="1"> 1</label>
+                <label style="padding:10px; border:1px solid #ccc; cursor:pointer;"><input type="radio" name="question4" value="2"> 2</label>
+                <label style="padding:10px; border:1px solid #ccc; cursor:pointer;"><input type="radio" name="question4" value="3"> 3</label>
+                <label style="padding:10px; border:1px solid #ccc; cursor:pointer;"><input type="radio" name="question4" value="4"> 4</label>
+                <label style="padding:10px; border:1px solid #ccc; cursor:pointer;"><input type="radio" name="question4" value="5"> 5</label>
+                <label style="padding:10px; border:1px solid #ccc; cursor:pointer;"><input type="radio" name="question4" value="6"> 6</label>
+                <label style="padding:10px; border:1px solid #ccc; cursor:pointer;"><input type="radio" name="question4" value="7"> 7</label>
+                <label style="padding:10px; border:1px solid #ccc; cursor:pointer;"><input type="radio" name="question4" value="8"> 8</label>
+                <label style="padding:10px; border:1px solid #ccc; cursor:pointer;"><input type="radio" name="question4" value="9"> 9</label>
+                <label style="padding:10px; border:1px solid #ccc; cursor:pointer;"><input type="radio" name="question4" value="10"> 10</label>
             </div>
 		</div>
 
         <div class="survey-page" id="page-14" style="display: none;">
             <p>Frequência de uso de fontes de informação:</p>
             <table style="width:100%; font-size:14px;">
-                <tr><th>Fonte</th><th>Dia</th><th>Sem</th><th>Mês</th><th>Raro</th><th>Nunca</th></tr>
+                <tr>
+                    <th>Fonte</th>
+                    <th>Diariamente</th>
+                    <th>Semanalmente</th>
+                    <th>Mensalmente</th>
+                    <th>Menos que mensalmente</th>
+                    <th>Nunca</th>
+                </tr>
                 <tr><td>Jornal diário</td><td><label><input type="radio" name="q5_jornal_diario" value="diariamente"></label></td><td><label><input type="radio" name="q5_jornal_diario" value="semanalmente"></label></td><td><label><input type="radio" name="q5_jornal_diario" value="mensalmente"></label></td><td><label><input type="radio" name="q5_jornal_diario" value="menos_que_mensalmente"></label></td><td><label><input type="radio" name="q5_jornal_diario" value="nunca"></label></td></tr>
                 <tr><td>Jornais de TV</td><td><label><input type="radio" name="q5_jornais_tv" value="diariamente"></label></td><td><label><input type="radio" name="q5_jornais_tv" value="semanalmente"></label></td><td><label><input type="radio" name="q5_jornais_tv" value="mensalmente"></label></td><td><label><input type="radio" name="q5_jornais_tv" value="menos_que_mensalmente"></label></td><td><label><input type="radio" name="q5_jornais_tv" value="nunca"></label></td></tr>
-                <tr><td>Rádio</td><td><label><input type="radio" name="q5_jornais_radio" value="diariamente"></label></td><td><label><input type="radio" name="q5_jornais_radio" value="semanalmente"></label></td><td><label><input type="radio" name="q5_jornais_radio" value="mensalmente"></label></td><td><label><input type="radio" name="q5_jornais_radio" value="menos_que_mensalmente"></label></td><td><label><input type="radio" name="q5_jornais_radio" value="nunca"></label></td></tr>
+                <tr><td>Jornais de rádio</td><td><label><input type="radio" name="q5_jornais_radio" value="diariamente"></label></td><td><label><input type="radio" name="q5_jornais_radio" value="semanalmente"></label></td><td><label><input type="radio" name="q5_jornais_radio" value="mensalmente"></label></td><td><label><input type="radio" name="q5_jornais_radio" value="menos_que_mensalmente"></label></td><td><label><input type="radio" name="q5_jornais_radio" value="nunca"></label></td></tr>
+                <tr><td>Celular</td><td><label><input type="radio" name="q5_celular" value="diariamente"></label></td><td><label><input type="radio" name="q5_celular" value="semanalmente"></label></td><td><label><input type="radio" name="q5_celular" value="mensalmente"></label></td><td><label><input type="radio" name="q5_celular" value="menos_que_mensalmente"></label></td><td><label><input type="radio" name="q5_celular" value="nunca"></label></td></tr>
+                <tr><td>Email</td><td><label><input type="radio" name="q5_email" value="diariamente"></label></td><td><label><input type="radio" name="q5_email" value="semanalmente"></label></td><td><label><input type="radio" name="q5_email" value="mensalmente"></label></td><td><label><input type="radio" name="q5_email" value="menos_que_mensalmente"></label></td><td><label><input type="radio" name="q5_email" value="nunca"></label></td></tr>
+                <tr><td>Internet</td><td><label><input type="radio" name="q5_internet" value="diariamente"></label></td><td><label><input type="radio" name="q5_internet" value="semanalmente"></label></td><td><label><input type="radio" name="q5_internet" value="mensalmente"></label></td><td><label><input type="radio" name="q5_internet" value="menos_que_mensalmente"></label></td><td><label><input type="radio" name="q5_internet" value="nunca"></label></td></tr>
                 <tr><td>Redes sociais</td><td><label><input type="radio" name="q5_redes_sociais" value="diariamente"></label></td><td><label><input type="radio" name="q5_redes_sociais" value="semanalmente"></label></td><td><label><input type="radio" name="q5_redes_sociais" value="mensalmente"></label></td><td><label><input type="radio" name="q5_redes_sociais" value="menos_que_mensalmente"></label></td><td><label><input type="radio" name="q5_redes_sociais" value="nunca"></label></td></tr>
                 <tr><td>Conversas</td><td><label><input type="radio" name="q5_conversas" value="diariamente"></label></td><td><label><input type="radio" name="q5_conversas" value="semanalmente"></label></td><td><label><input type="radio" name="q5_conversas" value="mensalmente"></label></td><td><label><input type="radio" name="q5_conversas" value="menos_que_mensalmente"></label></td><td><label><input type="radio" name="q5_conversas" value="nunca"></label></td></tr>
                 <tr><td>IA (ChatGPT)</td><td><label><input type="radio" name="q5_ia" value="diariamente"></label></td><td><label><input type="radio" name="q5_ia" value="semanalmente"></label></td><td><label><input type="radio" name="q5_ia" value="mensalmente"></label></td><td><label><input type="radio" name="q5_ia" value="menos_que_mensalmente"></label></td><td><label><input type="radio" name="q5_ia" value="nunca"></label></td></tr>
@@ -347,92 +412,79 @@
         <div class="survey-page" id="page-15" style="display: none;">
 			<p>Quem é responsável por julgar se uma lei é constitucional no Brasil?</p>
 			<div>
-				<label class="option-label"><input name="question6" type="radio" value="camara"/> Câmara dos Deputados</label>
-				<label class="option-label"><input name="question6" type="radio" value="senado"/> Senado Federal</label>
-				<label class="option-label"><input name="question6" type="radio" value="stf"/> Supremo Tribunal Federal (STF)</label>
-				<label class="option-label"><input name="question6" type="radio" value="presidencia"/> Presidência da República</label>
-                <label class="option-label"><input name="question6" type="radio" value="nao_sei"/> Não sei / Não lembro</label>
+				<label class="option-row"><input name="question6" type="radio" value="camara"/> Câmara dos Deputados</label>
+				<label class="option-row"><input name="question6" type="radio" value="senado"/> Senado Federal</label>
+				<label class="option-row"><input name="question6" type="radio" value="stf"/> Supremo Tribunal Federal (STF)</label>
+				<label class="option-row"><input name="question6" type="radio" value="presidencia"/> Presidência da República</label>
+                <label class="option-row"><input name="question6" type="radio" value="nao_sei"/> Não sei / Não lembro</label>
 			</div>
         </div>
 
         <div class="survey-page" id="page-16" style="display: none;">
             <p>Com que frequência ocorrem eleições gerais (para presidente, governadores, deputados e senadores)?</p>
             <div>
-				<label class="option-label"><input name="question7" type="radio" value="2anos"/> A cada 2 anos</label>
-				<label class="option-label"><input name="question7" type="radio" value="4anos"/> A cada 4 anos</label>
-				<label class="option-label"><input name="question7" type="radio" value="5anos"/> A cada 5 anos</label>
-                <label class="option-label"><input name="question7" type="radio" value="6anos"/> A cada 6 anos</label>
-                <label class="option-label"><input name="question7" type="radio" value="nao_sei"/> Não sei / Não lembro</label>
+				<label class="option-row"><input name="question7" type="radio" value="2anos"/> A cada 2 anos</label>
+				<label class="option-row"><input name="question7" type="radio" value="4anos"/> A cada 4 anos</label>
+				<label class="option-row"><input name="question7" type="radio" value="5anos"/> A cada 5 anos</label>
+                <label class="option-row"><input name="question7" type="radio" value="6anos"/> A cada 6 anos</label>
+                <label class="option-row"><input name="question7" type="radio" value="nao_sei"/> Não sei / Não lembro</label>
 			</div>
         </div>
 
         <div class="survey-page" id="page-17" style="display: none;">
             <p>Você sabe qual cargo Hugo Motta ocupa atualmente?</p>
             <div>
-				<label class="option-label"><input name="question9" type="radio" value="presidente_camara"/> Presidente da Câmara dos Deputados</label>
-				<label class="option-label"><input name="question9" type="radio" value="presidente_senado"/> Presidente do Senado Federal</label>
-				<label class="option-label"><input name="question9" type="radio" value="ministro_stf"/> Ministro do STF</label>
-                <label class="option-label"><input name="question9" type="radio" value="nao_sei"/> Não sei / Não lembro</label>
+				<label class="option-row"><input name="question9" type="radio" value="presidente_camara"/> Presidente da Câmara dos Deputados</label>
+				<label class="option-row"><input name="question9" type="radio" value="presidente_senado"/> Presidente do Senado Federal</label>
+				<label class="option-row"><input name="question9" type="radio" value="ministro_stf"/> Ministro do STF</label>
+                <label class="option-row"><input name="question9" type="radio" value="nao_sei"/> Não sei / Não lembro</label>
 			</div>
 		</div>
 
 		<div class="survey-page" id="page-18" style="display: none;">
 			<p>Para demonstrar que você está lendo as perguntas com atenção, por favor selecione a opção "Julgar crimes" abaixo.</p>
 			<div>
-				<label class="option-label"><input name="question8" type="radio" value="criar_revisar_leis"/> Criar e revisar leis</label>
-				<label class="option-label"><input name="question8" type="radio" value="julgar_crimes"/> Julgar crimes</label>
-				<label class="option-label"><input name="question8" type="radio" value="sentencas_constitucionais"/> Definir sentenças constitucionais</label>
-                <label class="option-label"><input name="question8" type="radio" value="orcamento_estados_municipios"/> Administrar o orçamento de estados e municípios</label>
-                <label class="option-label"><input name="question8" type="radio" value="nao_sei"/> Não sei / Não lembro</label>
+				<label class="option-row"><input name="question8" type="radio" value="criar_revisar_leis"/> Criar e revisar leis</label>
+				<label class="option-row"><input name="question8" type="radio" value="julgar_crimes"/> Julgar crimes</label>
+				<label class="option-row"><input name="question8" type="radio" value="sentencas_constitucionais"/> Definir sentenças constitucionais</label>
+                <label class="option-row"><input name="question8" type="radio" value="orcamento_estados_municipios"/> Administrar o orçamento de estados e municípios</label>
+                <label class="option-row"><input name="question8" type="radio" value="nao_sei"/> Não sei / Não lembro</label>
 			</div>
 		</div>
 
 		<div id="navigation-buttons" style="margin-top: 20px;">
-            <div id="loading-spinner" style="display:none; color:blue;">Verificando cota...</div>
-			<button id="next-button" onclick="handleNextButton()" style="padding: 10px 20px; font-size: 16px;">Avançar</button>
+            <button id="next-button" onclick="handleNextButton()" style="padding: 10px 20px; font-size: 16px;">Avançar</button>
 		</div>
 	</div>
 
-    <div id="description" style="text-align: center; margin-bottom: 20px; display: none;">
-        <p style="font-size: 18px; color: #555;"><b>Primeiro, por favor responda.</b></p>
+    <div id="ai-section">
+        <div id="description"></div>
+
+        <div id="timer" style="display: none;"></div>
+
+        <div id="chatbox" style="display: none;"></div>
+
+        <input id="user-input" placeholder="Digite sua mensagem..." style="display: none;" type="text"/>
     </div>
 
-    <div id="question-box" style="display: none; text-align: center; margin-top: 20px; margin-bottom: 30px;">
-        <p id="final-question" style="font-weight:bold;">Qual sua opinião sobre a proposta acima?</p>
+    <div id="question-box" style="display: none;">
+        <p id="final-question" style="font-weight:bold; font-size:18px;"></p>
         
-        <div id="ai-scale" class="ai-vote-container">
-            <label class="ai-vote-option">
-                <input type="radio" name="ai_vote" value="discordo_fortemente">
-                <span>Discordo fortemente</span>
-            </label>
-            <label class="ai-vote-option">
-                <input type="radio" name="ai_vote" value="discordo">
-                <span>Discordo</span>
-            </label>
-            <label class="ai-vote-option">
-                <input type="radio" name="ai_vote" value="neutro">
-                <span>Neutro</span>
-            </label>
-            <label class="ai-vote-option">
-                <input type="radio" name="ai_vote" value="concordo">
-                <span>Concordo</span>
-            </label>
-            <label class="ai-vote-option">
-                <input type="radio" name="ai_vote" value="concordo_fortemente">
-                <span>Concordo fortemente</span>
-            </label>
+        <div id="ai-scale" class="ai-options-container">
+            <label class="ai-option-card"><input type="radio" name="ai_vote" value="discordo_fortemente"> <span>Discordo fortemente</span></label>
+            <label class="ai-option-card"><input type="radio" name="ai_vote" value="discordo"> <span>Discordo</span></label>
+            <label class="ai-option-card"><input type="radio" name="ai_vote" value="neutro"> <span>Neutro</span></label>
+            <label class="ai-option-card"><input type="radio" name="ai_vote" value="concordo"> <span>Concordo</span></label>
+            <label class="ai-option-card"><input type="radio" name="ai_vote" value="concordo_fortemente"> <span>Concordo fortemente</span></label>
         </div>
 
-        <br>
-        <button id="submit-vote-btn" style="padding: 10px 20px;">Enviar resposta</button>
-        <p id="vote-message" style="color: green; display: none;"></p>
+        <button id="submit-vote-btn" style="padding: 12px 25px; font-size: 16px; background: #007bff; color: white; border: none; border-radius: 5px; margin-top: 15px;" disabled>
+            Enviar resposta
+        </button>
+        <p id="vote-message" style="margin-top: 20px; font-size: 16px; color: green; display: none;"></p>
     </div>
 
-    <div id="timer" style="display: none;"><span style="color: red;">3:00</span></div>
-    <div id="chatbox" style="display: none;"></div>
-    <input id="user-input" placeholder="Digite sua mensagem..." style="display: none;" type="text"/>
-
-    <div id="final-consultation-page" style="display: none; max-width: 800px; margin: 0 auto;">
+    <div id="final-consultation-page" style="display: none; max-width: 800px; margin: 0 auto; padding: 20px;">
         <div style="background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
             <h2 style="color: #28a745; text-align: center;">A pesquisa foi concluída.</h2>
             
@@ -552,7 +604,7 @@
 
     // --- ESTADO ---
     let currentPage = 1;
-    const TOTAL_PAGES_FORM = 18; // 18 páginas de formulário
+    const TOTAL_PAGES_FORM = 18; 
     let currentCategoryIndex = 0;
     let currentQuestion = "";
     let showChatbox = false;
@@ -564,14 +616,13 @@
     isAI = Math.random() < 0.5;
     console.log("Modo IA:", isAI);
 
-    // FUNÇÃO SKIPWAIT (Para pular timer via console)
+    // FUNÇÃO SKIPWAIT
     window.skipWait = function() {
         console.log('skipWait() called');
         if (timerInterval) {
             clearInterval(timerInterval);
             timerInterval = null;
         }
-        // Se houver um chatbox aberto ou question-box, libera
         const timerDiv = document.getElementById('timer');
         if (timerDiv) {
             timerDiv.innerHTML = '';
@@ -607,7 +658,7 @@
             }
         }
 
-        // Verifica Attention Check (Agora na página 18)
+        // Verifica Attention Check (Página 18)
         if (currentPage === 18) {
             const q8 = document.querySelector('input[name="question8"]:checked').value;
             if (q8 !== "julgar_crimes") {
@@ -621,7 +672,6 @@
         currentDiv.style.display = 'none';
 
         // Lógica para pular Q3 (P12) se necessário
-        // Se está na P11 (Q2) e vai para a frente:
         if (currentPage === 11) {
             const q2 = document.querySelector('input[name="question2"]:checked').value;
             // Se NÃO votou nos dois turnos ou só no segundo, PULA a pergunta de "em quem votou no 2o turno"
@@ -639,6 +689,7 @@
         } else {
             // Fim do form, iniciar Experimento
             document.getElementById('survey-questions').style.display = 'none';
+            // Mostra Instruções primeiro
             document.getElementById('instructions').style.display = 'block';
         }
     }
@@ -670,7 +721,7 @@
 
         // Validação da Tabela de Mídia (Página 14)
         if (currentPage === 14) {
-             const groups = ["q5_jornal_diario", "q5_jornais_tv", "q5_jornais_radio", "q5_redes_sociais", "q5_conversas", "q5_ia"];
+             const groups = ["q5_jornal_diario","q5_jornais_tv","q5_jornais_radio","q5_celular","q5_email","q5_internet","q5_redes_sociais","q5_conversas","q5_ia"];
              for (let name of groups) {
                 if (!activePage.querySelector(`input[name="${name}"]:checked`)) {
                     alert("Por favor, responda a todas as linhas da tabela.");
@@ -721,8 +772,13 @@
 
     // --- EXPERIMENTO ---
     function startExperiment() {
+        // Esconde container de instruções
         document.getElementById('instructions').style.display = 'none';
-        document.getElementById('description').style.display = 'block';
+        
+        // Mostra a seção de IA
+        document.getElementById('ai-section').style.display = 'flex';
+        
+        // Carrega proposta
         loadNextProposal();
     }
 
@@ -742,7 +798,7 @@
         chatbox.innerHTML = '';
         conversationHistory = [];
 
-        // Setup
+        // Setup Proposta
         const descDiv = document.getElementById('description');
         descDiv.innerHTML = `<p><strong>Proposta:</strong> ${currentQuestion}</p>`;
 
@@ -865,13 +921,14 @@
     }
 
     function showFinalPage() {
-        document.getElementById('description').style.display = 'none';
+        // Esconde TODA a seção de IA
+        document.getElementById('ai-section').style.display = 'none';
         document.getElementById('question-box').style.display = 'none';
-        document.getElementById('chatbox').style.display = 'none';
-        document.getElementById('timer').style.display = 'none';
-        document.getElementById('user-input').style.display = 'none';
+        
+        // Garante que o container principal está escondido
         document.querySelector('.survey-container').style.display = 'none'; 
 
+        // Mostra a página final
         document.getElementById('final-consultation-page').style.display = 'block';
     }
 
@@ -908,6 +965,9 @@
                 q5_jornal_diario: getVal('q5_jornal_diario'),
                 q5_jornais_tv: getVal('q5_jornais_tv'),
                 q5_jornais_radio: getVal('q5_jornais_radio'),
+                q5_celular: getVal('q5_celular'),
+                q5_email: getVal('q5_email'),
+                q5_internet: getVal('q5_internet'),
                 q5_redes_sociais: getVal('q5_redes_sociais'),
                 q5_conversas: getVal('q5_conversas'),
                 q5_ia: getVal('q5_ia')
@@ -918,7 +978,7 @@
     // Consent Buttons
     window.acceptConsent = () => {
         document.getElementById('consent-section').style.display = 'none';
-        document.querySelector('.survey-container').style.display = 'flex';
+        document.querySelector('.survey-container').style.display = 'block';
         document.getElementById('survey-questions').style.display = 'block';
     };
     window.declineConsent = () => {
