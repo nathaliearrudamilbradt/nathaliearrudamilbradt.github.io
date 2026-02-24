@@ -561,20 +561,6 @@
             }
         }
 
-        // Verifica Cotas
-        if (currentPage === 2 || currentPage === 3 || currentPage === 4) {
-            btn.style.display = 'none';
-            spinner.style.display = 'block';
-            const quotaFull = await checkQuotaForCurrentPage();
-            spinner.style.display = 'none';
-            btn.style.display = 'inline-block';
-
-            if (quotaFull) {
-                redirectUser("QUOTA_FULL");
-                return;
-            }
-        }
-
         // Verifica Attention Check
         if (currentPage === 18) {
             const q8 = document.querySelector('input[name="question8"]:checked').value;
@@ -760,7 +746,7 @@
         userInput.value = '';
 
         try {
-            const res = await fetch(BACKEND_URL + '/chat', {
+            const res = await fetch(BACKEND_URL + '/chat_entrevistas', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ history: conversationHistory, prolificPID, question: currentQuestionObj.text })
@@ -801,7 +787,7 @@
         }
 
         try {
-            await fetch(BACKEND_URL + '/vote', {
+            await fetch(BACKEND_URL + '/vote_entrevistas', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
@@ -826,7 +812,7 @@
     async function saveDataBeforeRedirect() {
         const payload = collectAllData();
         try {
-            await fetch(BACKEND_URL + '/survey', {
+            await fetch(BACKEND_URL + '/survey_entrevistas', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(payload)
@@ -840,7 +826,7 @@
     function finishSurvey() {
         const payload = collectAllData();
         
-        fetch(BACKEND_URL + '/survey', {
+        fetch(BACKEND_URL + '/survey_entrevistas', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(payload)
